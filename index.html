@@ -262,10 +262,19 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .mmeta{font-size:13.5px;color:var(--ink2);border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px;display:grid;gap:3px}
 .mbody{white-space:pre-wrap;font-size:15px;line-height:1.6}
 /* ---------- gallery / lightbox ---------- */
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
 .gimg{border:1px solid var(--line);background:var(--frame);border-radius:16px;padding:6px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:8px;transition:transform .15s,box-shadow .15s}
 .gimg:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.08)}
-.gimg img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:11px;display:block;background:var(--card)}
+.gimg img{width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:11px;display:block;background:var(--card);padding:4px}
+.gfile{border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;background:var(--frame)}
+.gfile .ext{font-family:ui-monospace,Menlo,monospace;font-size:11px;font-weight:600;letter-spacing:.06em;background:var(--navy);color:#fff;padding:4px 8px;border-radius:7px}
+.gfile span{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.gfile small{display:block;color:var(--ink3);font-size:12px}
+.piecebox{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card)}
+.piecebox img{display:block;width:100%;max-height:640px;object-fit:contain;cursor:zoom-in}
+.piecebar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:var(--frame);font-size:14px;flex-wrap:wrap}
+.drivebtn{display:inline-flex;align-items:center;gap:8px}
+.drivebtn i{width:10px;height:10px;border-radius:50%;background:var(--green);display:inline-block}
 .gimg span{font-size:13px;padding:0 4px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gimg small{display:block;color:var(--ink3);font-size:12px}
 .lb{position:fixed;inset:0;background:rgba(10,10,10,.72);z-index:90;display:grid;place-items:center;padding:24px;animation:tin .2s}
@@ -285,7 +294,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(70% 50% at 10% 0%,#D9E7FA 0,transparent 60%),radial-gradient(60% 45% at 95% 100%,#E7E4F7 0,transparent 60%),var(--bg)}
 .lcard{grid-template-columns:1.15fr 1fr}
 .lcard{width:min(1040px,100%);display:grid;grid-template-columns:1.1fr 1fr;background:var(--frame);border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
-.lvis{position:relative;overflow:hidden;isolation:isolate;padding:36px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line);
+.lvis{position:relative;overflow:hidden;isolation:isolate;padding:30px 40px 32px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line);
   background:
     radial-gradient(55% 45% at 15% 18%,#CFE0FA 0,rgba(207,224,250,0) 70%),
     radial-gradient(45% 40% at 88% 30%,#E3DEF9 0,rgba(227,222,249,0) 70%),
@@ -299,8 +308,11 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.19 0 0 0 0 0.41 0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 @keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(4%,6%) rotate(6deg)}}
 .lvis-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.lobby{flex:1;display:grid;place-items:center;min-height:200px;margin:-6px 0}
-.lobby img{width:min(100%,360px);aspect-ratio:1;mix-blend-mode:multiply;filter:contrast(1.05);opacity:.92}
+.lobby{flex:1;display:grid;place-items:center;min-height:0;margin:-14px -20px -6px}
+.lobby img{width:min(112%,470px);max-width:none;aspect-ratio:1;animation:floaty 7s ease-in-out infinite}
+.lcard{max-height:calc(100vh - 48px)}
+.lform{overflow:auto}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .orgtag{font-size:12.5px;font-weight:500;color:var(--navy);background:rgba(255,255,255,.7);border:1px solid rgba(9,49,105,.12);padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px)}
 .lvis-brand{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:4px 0}
 .bigmark{color:var(--accent);filter:drop-shadow(0 10px 24px rgba(20,108,232,.18))}
@@ -350,7 +362,8 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
   .lvis-brand{gap:8px}
   .bigmark svg{width:56px;height:60px}
   .lobby{min-height:0}
-  .lobby img{width:min(100%,220px)}
+  .lobby{margin:-6px 0}
+  .lobby img{width:min(100%,250px)}
   .bigname{font-size:28px}
   .bigorg{font-size:14px}
   .lvis>p.muted{display:none}
@@ -452,6 +465,11 @@ const DEFAULTS = {
 };
 // Roles: solicitante · disenador · supervisor · director.  designs=true recibe piezas. dev=true ve Configuración.
 const PRESETS = {
+  prueba: { org:'Prueba real · Gmail de Camilo', short:'PRUEBA', suite:'Gmail + Drive vía Google Apps Script', domain:'gmail.com', label:'Prueba real', empty:true,
+    users:[
+      ['cam','Camilo Orozco','supervisor','Comunicaciones',{designs:true,dev:true,email:'camiloorozcofx@gmail.com'}],
+      ['sol','Camilo (solicitante)','solicitante','Talento Humano',{email:'camiloorozcofx@gmail.com'}]
+    ], main:'sol' },
   elc: { org:'Empresa de Licores de Cundinamarca', short:'ELC', suite:'Google Workspace (Gmail, Drive, AppSheet)', domain:'elc.demo', label:'ELC · Google',
     users:[
       ['cam','Camilo Orozco','disenador','Comunicaciones · Diseño',{designs:true,dev:true}],
@@ -619,10 +637,28 @@ const fakeImg = (a,b,label,ratio) => { const [w,hh] = ratio==='v'?[480,640]:rati
 
 /* ---------- data ---------- */
 const KEY = 'c360-demo-v3';
+const IKEY = 'c360-integ';
+let INTEG = {url:'',gestor:'',on:false};
+try{ INTEG = {...INTEG, ...(JSON.parse(localStorage.getItem(IKEY)||'{}'))}; }catch(e){}
+function saveInteg(){ try{ localStorage.setItem(IKEY, JSON.stringify(INTEG)); }catch(e){} }
+// Envía un evento al Apps Script (ver integracion/Code.gs). Crea carpetas en Drive y correos reales.
+async function sync(action, r, extra){
+  if(!INTEG.on || !INTEG.url) return;
+  const u = id => { const x = U(id); return x ? {name:x.name,email:x.email,area:x.area} : null; };
+  const payload = {action, gestor:INTEG.gestor, org:S.org, request:{id:r.id,title:r.title,type:TY(r.type).label,formats:r.formats.map(f=>FMT[f]?FMT[f].name:f),objective:r.objective,audience:r.audience,context:r.context,pieceText:r.pieceText,logos:r.logos,refLink:r.refLink,due:r.due,minDue:r.minDue,status:ST[r.status].l,priority:r.priority,requester:u(r.requester),assignee:u(r.assignee),rounds:r.rounds,driveUrl:r.driveUrl,queuePos:qpos(r)+1,queueLen:queue().length}, ...(extra||{})};
+  toast('Sincronizando con Google…');
+  try{
+    const res = await fetch(INTEG.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload)});
+    const j = await res.json();
+    if(j.folderUrl) r.driveUrl = j.folderUrl;
+    if(j.files && r.files){ j.files.forEach(f=>{ const m = r.files.find(x=>x.name===f.name); if(m) m.url = f.url; }); }
+    save(); render(); toast(j.message || 'Drive y correo actualizados');
+  }catch(e){ toast('No se pudo sincronizar: '+e.message); }
+}
 let S;
 function seed(preset){
   const P = PRESETS[preset];
-  const users = P.users.map(([id,name,role,area,x])=>({id,name,role,area,...(x||{}),email:(x&&x.internal?name:name).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z ]/g,'').trim().replace(/ +/g,'.')+'@'+P.domain}));
+  const users = P.users.map(([id,name,role,area,x])=>({id,name,role,area,...(x||{}),email:(x&&x.email)||(name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z ]/g,'').trim().replace(/ +/g,'.')+'@'+P.domain)}));
   const sup = users.find(u=>u.role==='supervisor'||u.role==='director').id;
   const des = users.filter(u=>u.designs).map(u=>u.id);
   const req = users.filter(u=>u.role==='solicitante').map(u=>u.id);
@@ -634,7 +670,7 @@ function seed(preset){
   const mk = o => {
     const id = 'C360-'+String(seq++).padStart(4,'0');
     const created = now - o.ago*DAY - (o.h||5)*36e5;
-    const r = {id,title:o.title,type:o.type,formats:o.formats||['Feed 4:5'],objective:o.obj||'informar',audience:o.aud||['Interno'],context:o.ctx,pieceText:o.text||'',logos:o.logos||'',refLink:o.ref||'',files:o.files||[],requester:o.by,area:users.find(u=>u.id===o.by).area,created,minDue:iso(addBizCfg(new Date(created),cfg.sla[o.type]??3,cfg)),due:iso(addBizCfg(T,o.due,cfg)),priority:o.prio||null,status:o.st,assignee:o.as||null,rounds:o.rounds||0,adjustments:o.adj||[],proposal:o.prop||null,finalFile:o.final||null,delivered:o.st==='entregada'?now-(o.dAgo||1)*DAY:null,history:[],notes:o.notes||[],returnReason:o.ret||null,cancelReason:null};
+    const r = {id,title:o.title,type:o.type,formats:o.formats||['Feed 4:5'],objective:o.obj||'informar',audience:o.aud||['Interno'],context:o.ctx,pieceText:o.text||'',logos:o.logos||'',refLink:o.ref||'',files:o.files||[],requester:o.by,area:users.find(u=>u.id===o.by).area,created,minDue:iso(addBizCfg(new Date(created),cfg.sla[o.type]??3,cfg)),due:iso(addBizCfg(T,o.due,cfg)),priority:o.prio||null,status:o.st,assignee:o.as||null,rounds:o.rounds||0,adjustments:o.adj||[],proposal:o.prop||null,finalFile:o.final||null,finalThumb:o.finalThumb||null,driveUrl:null,delivered:o.st==='entregada'?now-(o.dAgo||1)*DAY:null,history:[],notes:o.notes||[],returnReason:o.ret||null,cancelReason:null};
     r.history.push({at:created,by:o.by,a:'Creó la solicitud'});
     mails.push({id:uid(),at:created+6e4,from:'comunicaciones@'+P.domain,to:users.find(u=>u.id===o.by).email,subject:`[${id}] Recibimos tu solicitud: ${o.title}`,body:`Hola, ${first(users.find(u=>u.id===o.by))}:\n\nRegistramos tu solicitud "${o.title}".\nFecha requerida: ${fmt(r.due)}.\n\nPuedes ver el estado en Comunicación 360.`,reqId:id});
     let t2 = created + 3*36e5;
@@ -654,6 +690,9 @@ function seed(preset){
     {name:'logo_aliado.png',size:88000,thumb:fakeImg('#3563A8','#9FB9E6','Logo aliado','s')}
   ];
   const prop = (l,r) => ({name:'propuesta_v1.jpg',thumb:fakeImg('#5149A8','#B9B2F0',l,r)});
+  if(P.empty) return {v:3,preset,org:P.org,short:P.short,suite:P.suite,domain:P.domain,cfg,users,reqs,mails,seq,session:null};
+  // Pieza real de ejemplo (ELC): afiche entregado
+  if(preset==='elc') mk({title:'Día Internacional contra el Cambio Climático',type:'afiche',by:'lau',st:'entregada',as:'cam',ago:4,due:-1,dAgo:1,formats:['Feed 4:5','Pantalla / TV'],obj:'informar',aud:['Interno'],ctx:'Pieza conmemorativa del 24 de octubre para redes internas y carteleras, con acciones concretas que puede hacer cada colaborador.',text:'Día Internacional contra el CAMBIO CLIMÁTICO · 24 de octubre\n¿Qué es? · Causas · ¿Qué se puede hacer para disminuir su efecto?\n¡Pequeñas acciones pueden contribuir a un gran cambio!',logos:'ELC, SGC, Actitud Verde',final:'cambio_climatico_final.jpg',prop:{name:'propuesta_v1.jpg',thumb:'assets/ejemplo_cambio_climatico.jpg'},finalThumb:'assets/ejemplo_cambio_climatico.jpg'});
   // Casos principales (solicitante principal del preset)
   mk({title:'Boletín de gerencia · octubre',type:'interna',by:main,st:'aprobacion',as:D(0),ago:3,due:1,formats:['Correo interno','Pantalla / TV'],obj:'informar',ctx:'Boletín mensual de gerencia con los logros del mes y mensaje del gerente. Debe verse institucional y sobrio.',text:'BOLETÍN DE GERENCIA\nOctubre 2026\nMensaje del gerente · Logros del mes · Agenda de noviembre',logos:'Logo institucional (adjunto)',ref:'Nos gustó la estructura del boletín anterior (adjunto)',files:IMGS,prop:prop('Propuesta v1 · Boletín','v')});
   mk({title:'Invitación reunión de resultados',type:'post',by:main,st:'diseno',as:D(0),ago:1,h:2,due:3,formats:['Feed 4:5','Correo interno'],obj:'invitar',ctx:'Reunión trimestral de resultados con todas las áreas.',text:'Reunión de resultados · Trimestre 3\nJueves 5 de noviembre · 9:00 a. m.\nAuditorio principal'});
@@ -723,7 +762,7 @@ function loginView(){
   return `<div class="login"><div class="lcard">
     <div class="lvis">
       <div class="lvis-top"><span class="orgtag">${h(S.short)} · ${S.preset==='elc'?'Google Workspace':'Microsoft 365'}</span><span class="faint" style="font-size:12.5px">Prototipo · v4</span></div>
-      <div class="lobby"><img src="assets/lobby.gif" alt="" loading="lazy"></div>
+      <div class="lobby"><img src="assets/lobby.svg" alt="" loading="lazy"></div>
       <div class="lvis-brand">
         <div class="bigmark">${mark(96)}</div>
         <h2 class="bigname">Comunicación <b>360</b></h2>
@@ -733,7 +772,7 @@ function loginView(){
     </div>
     <div class="lform">
       <h1>Entra con tu cuenta corporativa</h1>
-      <p class="muted" style="margin-top:10px">Solo cuentas <b>@${h(S.domain)}</b> pueden crear solicitudes. En producción este paso lo hace el inicio de sesión de ${S.preset==='elc'?'Google':'Microsoft'}; aquí se simula.</p>
+      <p class="muted" style="margin-top:10px">Solo cuentas <b>@${h(S.domain)}</b> pueden crear solicitudes. En producción este paso lo hace el inicio de sesión de ${S.preset==='epc'?'Microsoft':'Google'}; aquí se simula.</p>
       <form data-form="login" style="margin-top:22px">
         <input class="in" name="email" type="email" placeholder="nombre.apellido@${h(S.domain)}" autocomplete="off" required>
         <div class="err" id="lerr"></div>
@@ -745,7 +784,7 @@ function loginView(){
         <span class="faint" style="font-size:13px">Empresa de la demo</span>
         <div class="seg">${Object.entries(PRESETS).map(([k,p])=>`<button data-a="preset" data-p="${k}" class="${S.preset===k?'on':''}">${p.label}</button>`).join('')}</div>
       </div>
-      <p class="faint" style="font-size:12.5px;margin-top:14px">Prototipo local. Datos ficticios guardados solo en este navegador.</p>
+      <p class="faint" style="font-size:12.5px;margin-top:14px">${S.preset==='prueba'?(INTEG.on&&INTEG.url?'Integración real activa: Drive + Gmail.':'Sin integración: entra como Camilo → Configuración y pega la URL del Apps Script.'):'Prototipo local. Datos ficticios guardados solo en este navegador.'}</p>
     </div>
   </div></div>`;
 }
@@ -890,7 +929,7 @@ function reqDetail(){
   } else if(r.status==='ajustes' && r.proposal){
     main = `<div class="card"><h3>Tus ajustes (ronda ${r.rounds})</h3>${annotHTML(r,false)}</div>`;
   } else if(r.status==='entregada'){
-    main = `<div class="card"><h3>Pieza entregada</h3>${r.proposal?annotHTML(r,false,true):''}<p style="margin-top:14px"><span class="faint">Archivo:</span> <b style="font-weight:500">${h(r.finalFile)}</b> · enviado a ${h(m.email)} el ${fmt(r.delivered)}</p></div>`;
+    main = `<div class="card"><h3>Pieza entregada</h3>${r.finalThumb?pieceBox(r,r.finalThumb,'Tu pieza final',r.finalFile,r.driveUrl):(r.proposal?annotHTML(r,false,true):'')}<p style="margin-top:14px" class="muted">Enviada a ${h(m.email)} el ${fmt(r.delivered)}${r.driveUrl?' · también en tu carpeta de Drive':''}.</p></div>`;
   } else if(r.status==='devuelta'){
     main = `<div class="card"><div class="alert amber" style="margin:0 0 16px">${ic('bell')}<p><b>Falta información:</b> ${h(r.returnReason)}</p></div><textarea class="in" id="resIn" placeholder="Escribe aquí lo que falta"></textarea><button class="btn pri" style="margin-top:10px" data-a="resend" data-id="${r.id}">Reenviar solicitud</button></div>`;
   }
@@ -907,7 +946,7 @@ function reqDetail(){
       ${canPrio?`<div class="card" style="border-color:var(--flag-soft)"><h3 style="display:flex;gap:8px;align-items:center;color:var(--flag)">${ic('flag',18)} Pedir prioridad</h3><p class="muted" style="font-size:14px">Explica por qué la necesitas antes del ${fmt(r.minDue)}. El supervisor la revisa y te avisa por correo.</p><div class="field" style="margin-top:12px"><input class="in" type="date" id="prioDate" min="${iso(today())}" max="${r.minDue}" value="${iso(addBiz(today(),1))}" style="max-width:240px"></div><textarea class="in" id="prioIn" style="margin-top:10px" placeholder="Motivo. Ej.: la gerencia la presenta este viernes."></textarea><button class="btn pri" style="margin-top:10px" data-a="askPrio" data-id="${r.id}">Enviar solicitud de prioridad</button></div>`:''}
       ${r.priority?`<div class="card soft"><b style="font-weight:500;color:var(--flag)">${ic('flag',14)} Prioridad ${r.priority.status==='pendiente'?'en revisión':r.priority.status==='aprobada'?'aprobada':'no aprobada'}</b><p style="margin-top:6px;font-size:14.5px">${h(r.priority.reason)}</p></div>`:''}
       <div class="card soft"><h3>Lo que pediste</h3><div class="kv"><div><small>Tipo</small><div>${h(t.label)}</div></div><div><small>Dónde se ve</small><div class="tags">${r.formats.map(f=>`<span class="chip c-slate">${fmtIcon(f)}${h(FMT[f]?FMT[f].name:f)}</span>`).join('')}</div></div><div><small>Fecha pedida</small><div>${fmt(r.due)}</div></div></div><div style="margin-top:14px"><small class="faint" style="font-size:12px;letter-spacing:.06em">TEXTO DE LA PIEZA</small><div class="piece" style="font-size:14.5px;padding:12px 14px;margin-top:6px;background:var(--frame)">${h(r.pieceText)}</div></div>
-        ${r.files.length?`<div class="gallery">${r.files.map((f,i)=>f.thumb?`<button class="gimg" data-a="lightbox" data-id="${r.id}" data-i="${i}"><img src="${f.thumb}" alt=""><span>${h(f.name)}</span></button>`:'').join('')}</div>`:''}
+        ${r.files.length?`<div class="gallery">${r.files.map((f,i)=>fileCard(r,f,i)).join('')}</div>`:''}
         ${['recibida','revision'].includes(r.status)?`<button class="btn danger sm" style="margin-top:16px" data-a="cancelReq" data-id="${r.id}">Cancelar esta solicitud</button>`:''}</div>
     </div>
     <aside><div class="card"><h3>Cómo va</h3><div class="timeline">${r.history.slice().reverse().slice(0,5).map(e=>`<div class="tl">${avatar(U(e.by),28)}<div><p>${h(e.a.split(': ')[0])}</p><small>${fmtT(e.at)}</small></div></div>`).join('')}</div></div></aside></div>`;
@@ -1073,6 +1112,7 @@ function wSubmit(){
   const r = {id,title:d.title.trim(),type:d.type,formats:d.formats,objective:d.objective,audience:d.audience,context:d.context.trim(),pieceText:d.pieceText.trim(),logos:d.logos.trim(),refLink:d.refLink.trim(),files:d.files,requester:m.id,area:m.area,created:Date.now(),minDue:iso(addBiz(today(),SLA(d.type))),due:d.due,priority:prio?{reason:d.reason.trim(),status:'pendiente'}:null,status:'recibida',assignee:null,rounds:0,adjustments:[],proposal:null,finalFile:null,delivered:null,history:[],notes:[],returnReason:null,cancelReason:null};
   S.reqs.push(r); log(r,'Creó la solicitud'+(prio?' con prioridad':''));
   const p = qpos(r);
+  sync('crear', r, {files: r.files.filter(f=>f.thumb).map(f=>({name:f.name,mime:'image/jpeg',data:f.thumb}))});
   mail([m.id],`[${id}] Recibimos tu solicitud: ${r.title}`,`Hola, ${first(m)}:\n\nRegistramos tu solicitud "${r.title}".\n\nTipo: ${t.label}\nFecha requerida: ${fmt(r.due)}${prio?' (prioridad pendiente de aprobación)':''}\nPosición en la fila: ${p===0?'primera':p+' solicitud(es) antes de la tuya'}\n\nTe avisaremos por este medio cada vez que cambie de estado.\n\nEquipo de Comunicación`,id);
   mail(supervisors().map(u=>u.id),`[${id}] Nueva solicitud${prio?' · PRIORIDAD':''}: ${r.title}`,`${m.name} (${m.area}) envió una solicitud.\nFecha requerida: ${fmt(r.due)}${prio?'\nJustificación de prioridad: '+r.priority.reason:''}`,id);
   save(); V.sentId = id; resetW(); go('sent');
@@ -1111,11 +1151,13 @@ function detailView(){
         <div style="margin-top:20px"><small class="faint" style="font-size:12px;letter-spacing:.06em">CONTEXTO</small><p style="margin-top:6px;white-space:pre-wrap">${h(r.context)}</p></div></div>
       <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><h3 style="margin:0">Texto dentro de la pieza</h3><button class="btn sm" data-a="copy" data-id="${r.id}">${ic('copy',14)} Copiar</button></div><div class="piece">${h(r.pieceText)}</div>
         ${r.logos?`<p style="margin-top:14px"><span class="faint">Logos:</span> ${h(r.logos)}</p>`:''}</div>
-      ${(r.refLink||r.files.length||r.finalFile)?`<div class="card"><h3>Referencias y archivos <span class="faint" style="font-weight:400;font-size:14px">· ${r.files.length} adjunto${r.files.length===1?'':'s'}</span></h3>${r.refLink?`<p><span class="faint">Referencia:</span> ${h(r.refLink)}</p>`:''}${r.files.length?`<div class="gallery">${r.files.map((f,i)=>f.thumb?`<button class="gimg" data-a="lightbox" data-id="${r.id}" data-i="${i}"><img src="${f.thumb}" alt="${h(f.name)}"><span>${h(f.name)}<small>${kb(f.size)}</small></span></button>`:`<div class="file" style="align-self:start"><span class="ph">${ic('clip',16)}</span><span>${h(f.name)}<small>${kb(f.size)}</small></span></div>`).join('')}</div>`:''}${r.finalFile?`<p style="margin-top:12px"><span class="faint">Archivo final:</span> <b style="font-weight:500">${h(r.finalFile)}</b></p>`:''}</div>`:''}
+      ${(r.refLink||r.files.length||r.finalFile)?`<div class="card"><h3>Referencias y archivos <span class="faint" style="font-weight:400;font-size:14px">· ${r.files.length} adjunto${r.files.length===1?'':'s'}</span></h3>${r.refLink?`<p><span class="faint">Referencia:</span> ${h(r.refLink)}</p>`:''}${r.files.length?`<div class="gallery">${r.files.map((f,i)=>fileCard(r,f,i)).join('')}</div>`:''}</div>`:''}
+      ${r.status==='entregada'?`<div class="card"><h3>Pieza entregada</h3>${r.finalThumb?pieceBox(r,r.finalThumb,'Entrega final',r.finalFile,r.driveUrl):`<p><span class="faint">Archivo final:</span> <b style="font-weight:500">${h(r.finalFile)}</b></p>`}</div>`:''}
       ${r.priority?`<div class="card" style="border-color:var(--flag-soft)"><h3 style="display:flex;gap:8px;align-items:center;color:var(--flag)">${ic('flag',18)} Prioridad solicitada</h3><p>${h(r.priority.reason)}</p><p class="faint" style="font-size:13.5px;margin-top:8px">Pide ${fmt(r.due)} · fecha estándar ${fmt(r.minDue)} · ${r.priority.status==='pendiente'?'pendiente del supervisor':r.priority.status==='aprobada'?'aprobada':'no aprobada, se mantiene la fecha estándar'}</p></div>`:''}
       <div class="card"><h3>Historial</h3><div class="timeline">${r.history.slice().reverse().map(e=>`<div class="tl">${avatar(U(e.by),28)}<div><p><b style="font-weight:500">${h(U(e.by)?.name||'')}</b> · ${h(e.a)}</p><small>${fmtT(e.at)}</small></div></div>`).join('')}</div></div>
     </div>
     <aside>
+      ${r.driveUrl?`<a class="btn drivebtn" style="width:100%;margin-bottom:16px" href="${h(r.driveUrl)}" target="_blank" rel="noopener"><i></i>Carpeta de la solicitud en Drive</a>`:''}
       ${ACTIVE.includes(r.status)?`<div class="card soft"><small class="faint" style="font-size:12px;letter-spacing:.06em">POSICIÓN EN LA FILA</small><div style="display:flex;align-items:baseline;gap:10px;margin-top:8px"><span class="bignum">${p+1}</span><span class="muted">de ${queue().length}</span></div></div>`:''}
       <div class="card"><div class="kv" style="grid-template-columns:1fr 1fr"><div><small>Fecha requerida</small><div>${fmt(r.due)}</div></div><div><small>Fecha de trabajo</small><div>${fmt(effDue(r))}</div></div><div><small>Responsable</small><div class="trunc">${r.assignee?h(U(r.assignee).name):'<span class="faint">Sin asignar</span>'}</div></div><div><small>Ajustes</small><div>${r.rounds} de ${CFG().maxRounds}</div></div></div></div>
       <div class="card"><h3>Acciones</h3>${actionsHTML(r,m)}</div>
@@ -1132,7 +1174,7 @@ function actionsHTML(r,m){
   if(staff && r.assignee){
     if(r.status==='asignada') out.push(`<button class="btn pri" data-a="start" data-id="${r.id}">Iniciar diseño ${ic('arrow',16)}</button>`);
     if(['diseno','ajustes'].includes(r.status)) out.push(`<div class="drop" data-a="pickProp" style="padding:14px">${ic('clip',20)}<div style="font-size:13.5px"><b style="font-weight:500;color:var(--ink)">${V.propFile?h(V.propFile.name):'Adjuntar imagen de la propuesta'}</b><div>Si no adjuntas, la demo usa una imagen de ejemplo.</div></div></div><button class="btn pri" data-a="propose" data-id="${r.id}">${ic('mail',16)} Enviar propuesta para aprobación</button>`);
-    if(r.status==='aprobada') out.push(`<input class="in" id="finalIn" placeholder="Nombre del archivo final" value="${h(r.title.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'_'))}_final.png"><button class="btn pri" data-a="deliver" data-id="${r.id}">${ic('mail',16)} Entregar por correo</button>`);
+    if(r.status==='aprobada') out.push(`<div class="drop" data-a="pickProp" style="padding:14px">${ic('clip',20)}<div style="font-size:13.5px"><b style="font-weight:500;color:var(--ink)">${V.propFile?h(V.propFile.name):'Adjuntar archivo final'}</b><div>Si no adjuntas, se entrega la propuesta aprobada.</div></div></div><button class="btn pri" data-a="deliver" data-id="${r.id}">${ic('mail',16)} Entregar por correo</button>`);
   }
   if(staff && ['recibida','revision','asignada'].includes(r.status)) out.push(`<textarea class="in" id="retIn" placeholder="¿Qué información falta?"></textarea><button class="btn" data-a="devolver" data-id="${r.id}">Devolver por falta de información</button>`);
   if(CAN.cancel(m) && (ACTIVE.includes(r.status)||r.status==='devuelta')) out.push(`<details style="margin-top:4px"><summary class="faint" style="cursor:pointer;font-size:13.5px">Cancelar solicitud</summary><div class="act" style="margin-top:10px"><textarea class="in" id="canIn" placeholder="Motivo (queda en el historial)"></textarea><button class="btn danger" data-a="cancelDir" data-id="${r.id}">Cancelar solicitud</button></div></details>`);
@@ -1157,8 +1199,18 @@ function boardView(){
       return `<div class="col"><div class="colh">${l}<span>${list.length}</span></div>${list.map(r=>`<div class="kc" data-a="open" data-id="${r.id}"><div style="display:flex;justify-content:space-between;gap:6px"><span class="idc">${h(r.id)}</span>${r.priority&&r.priority.status!=='rechazada'?`<span style="color:var(--flag)">${ic('flag',15)}</span>`:''}</div><b>${h(r.title)}</b><small>${h(TY(r.type).label)} · ${h(r.area)}</small><div class="row">${slaChip(r)}${team&&r.assignee?avatar(U(r.assignee),26):''}${btn&&(!team||r.assignee===m.id)?`<button class="btn sm" data-a="quick" data-id="${r.id}">${btn}</button>`:''}</div></div>`).join('')||'<div class="empty" style="padding:28px 8px;font-size:13.5px">Vacío</div>'}</div>`; }).join('')}</div>`;
 }
 
+/* ---------- archivos ---------- */
+const ext = n => (n.split('.').pop()||'').toUpperCase().slice(0,5);
+function fileCard(r,f,i){
+  if(f.thumb) return `<button class="gimg" data-a="lightbox" data-id="${r.id}" data-i="${i}"><img src="${f.thumb}" alt="${h(f.name)}"><span>${h(f.name)}<small>${kb(f.size)}${f.url?' · en Drive':''}</small></span></button>`;
+  return `<div class="gfile"><span class="ext">${h(ext(f.name)||'FILE')}</span><span title="${h(f.name)}">${h(f.name)}</span><small>${kb(f.size)}${f.url?' · <a href="'+h(f.url)+'" target="_blank" rel="noopener">abrir en Drive</a>':''}</small></div>`;
+}
+function pieceBox(r,img,label,fileName,url){
+  return `<div class="piecebox"><img src="${img}" alt="${h(label)}" data-a="lbimg" data-src="${img}" data-name="${h(fileName||label)}"><div class="piecebar"><span><b style="font-weight:500">${h(label)}</b>${fileName?' · <span class="faint">'+h(fileName)+'</span>':''}</span><span style="display:flex;gap:8px;flex-wrap:wrap">${url?`<a class="btn sm drivebtn" href="${h(url)}" target="_blank" rel="noopener"><i></i>Abrir en Drive</a>`:''}<a class="btn sm" href="${img}" download="${h(fileName||'pieza.jpg')}">Descargar</a></span></div></div>`;
+}
 /* ---------- lightbox ---------- */
 function lightboxHTML(){
+  if(V.lbimg){ return `<div class="lb" data-a="lbclose"><div class="lbbox" onclick="event.stopPropagation()"><img src="${V.lbimg.src}" alt=""><div class="lbbar"><span class="trunc">${h(V.lbimg.name)}</span><button class="btn icon" data-a="lbclose" aria-label="Cerrar">${ic('x',16)}</button></div></div></div>`; }
   if(!V.lb) return '';
   const r = R(V.lb.id); if(!r) return '';
   const f = r.files[V.lb.i]; if(!f||!f.thumb) return '';
@@ -1183,6 +1235,10 @@ function cfgView(){
     <div class="card"><h3>Reglas</h3><div class="cfg"><label><span>Rondas de ajustes permitidas</span><input class="in" type="number" min="1" max="5" data-cfg="maxRounds" value="${c.maxRounds}"></label><label><span>Dominio de correo</span><b style="font-weight:500">@${h(S.domain)}</b></label><label><span>Buzón remitente</span><b style="font-weight:500">comunicaciones@</b></label></div></div>
     <div class="card"><h3>Festivos que no cuentan como día hábil</h3><p class="faint" style="font-size:13px;margin-top:-6px">Uno por línea, formato AAAA-MM-DD. Verificar contra el calendario oficial.</p><textarea class="in" data-cfg="holidays" style="font-family:ui-monospace,Menlo,monospace;font-size:13px">${c.holidays.join('\n')}</textarea></div>
     <div class="card"><h3>Equipo</h3><div class="lhead" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>Nombre</span><span>Rol</span><span>Área</span><span>Correo</span></div>${S.users.map(u=>`<div class="lrow" style="grid-template-columns:1fr 1fr 1fr 1fr;cursor:default"><span class="trunc">${h(u.name)}${u.dev?' <span class="devtag">dev</span>':''}</span><span>${ROLE[u.role]}${u.designs?' · diseña':''}${u.video?' · video':''}</span><span class="trunc">${h(u.area)}</span><span class="trunc faint">${h(u.email)}</span></div>`).join('')}</div>
+    <div class="card" style="border-color:var(--teal-soft)"><h3>Integración con Google (Drive + Gmail)</h3><p class="muted" style="font-size:14px;margin-top:-6px">Pega la URL del Apps Script desplegado (ver <code>integracion/README.md</code>). Con esto cada solicitud crea su carpeta en Drive y envía correos reales desde la cuenta que desplegó el script.</p>
+      <div class="field"><label>URL del web app</label><input class="in" data-integ="url" value="${h(INTEG.url)}" placeholder="https://script.google.com/macros/s/…/exec"></div>
+      <div class="field"><label>Correo del gestor (recibe copia de todo)</label><input class="in" data-integ="gestor" value="${h(INTEG.gestor)}" placeholder="comunicaciones@empresa.co"></div>
+      <div class="field" style="flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap"><label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" data-integ="on" ${INTEG.on?'checked':''}> Activar integración real</label><button class="btn sm" data-a="pingInteg">Probar conexión</button><span id="pingOut" class="faint" style="font-size:13px"></span></div></div>
     <p class="faint" style="font-size:13px;margin-top:16px">Los cambios se guardan al salir de cada campo y aplican a las solicitudes nuevas.</p>`;
 }
 
@@ -1193,7 +1249,7 @@ function assign(r, did){
   const d = U(did), prev = r.assignee;
   r.assignee = did;
   if(['recibida','revision','devuelta'].includes(r.status)) r.status = 'asignada';
-  log(r, (prev?'Reasignó a ':'Asignó a ')+d.name);
+  log(r, (prev?'Reasignó a ':'Asignó a ')+d.name); sync('asignar',r);
   mail([r.requester],`[${r.id}] Tu solicitud fue asignada`,`Hola, ${first(U(r.requester))}:\n\n"${r.title}" quedó asignada a ${d.name}.\nFecha de trabajo: ${fmt(effDue(r))}.${note360}`,r.id);
   mail([did],`[${r.id}] Nueva asignación: ${r.title}`,`Se te asignó "${r.title}" (${TY(r.type).label}).\nFecha de trabajo: ${fmt(effDue(r))}.${note360}`,r.id);
   save(); render();
@@ -1215,11 +1271,13 @@ const ACT = {
   mailsel:t=>{ V.mailId=t.dataset.id; render(); },
   mailopen:t=>{ V.mailId=t.dataset.id; go('mail',{mailId:t.dataset.id}); },
   lightbox:(t,e)=>{ e.stopPropagation(); V.lb={id:t.dataset.id,i:+t.dataset.i}; render(); },
-  lbclose:()=>{ V.lb=null; render(); },
+  lbclose:()=>{ V.lb=null; V.lbimg=null; render(); },
+  lbimg:t=>{ V.lbimg={src:t.dataset.src,name:t.dataset.name}; render(); },
   lbnav:(t,e)=>{ e.stopPropagation(); const r=R(V.lb.id); const imgs=r.files.filter(f=>f.thumb); let k=imgs.findIndex(f=>r.files.indexOf(f)===V.lb.i); k=(k+(+t.dataset.d)+imgs.length)%imgs.length; V.lb.i=r.files.indexOf(imgs[k]); render(); },
   pick:()=>{ V.pickFor='wizard'; $('#fileIn').click(); },
   pickProp:()=>{ V.pickFor='prop'; $('#fileIn').click(); },
   pinRm:t=>{ V.pins.splice(+t.dataset.i,1); render(); },
+  pingInteg:async()=>{ const o=$('#pingOut'); if(!INTEG.url){ o.textContent='Falta la URL'; return; } o.textContent='Probando…'; try{ const r=await fetch(INTEG.url+(INTEG.url.includes('?')?'&':'?')+'ping=1'); const j=await r.json(); o.textContent='OK · '+(j.account||'conectado')+(j.root?' · carpeta: '+j.root:''); }catch(e){ o.textContent='Sin respuesta: '+e.message; } },
   wType:t=>{ W.d.type=t.dataset.v; render(); },
   wFmt:t=>{ const v=t.dataset.v, a=W.d.formats; a.includes(v)?a.splice(a.indexOf(v),1):a.push(v); render(); },
   wObj:t=>{ W.d.objective=t.dataset.v; render(); },
@@ -1230,15 +1288,15 @@ const ACT = {
   wBack:()=>{ if(W.step>1){ W.step--; V._top=true; render(); } },
   wGo:t=>{ W.step=+t.dataset.s; render(); },
   wSubmit:()=>wSubmit(),
-  askPrio:t=>{ const r=R(t.dataset.id); const v=($('#prioIn')||{}).value.trim(); const d=($('#prioDate')||{}).value; if(v.length<10){ toast('Explica el motivo (mínimo 10 letras)'); return; } if(!d){ toast('Elige la fecha'); return; } r.priority={reason:v,status:'pendiente'}; r.due=d; log(r,'Pidió prioridad para '+fmt(d)+': '+v); mail(supervisors().map(u=>u.id),`[${r.id}] Solicitud de prioridad: ${r.title}`,`${me().name} pide "${r.title}" para ${fmt(d)} (estándar ${fmt(r.minDue)}).\nMotivo: ${v}${note360}`,r.id); mail([me().id],`[${r.id}] Recibimos tu solicitud de prioridad`,`Hola, ${first(me())}:\n\nEl supervisor revisará tu solicitud de prioridad para "${r.title}". Mientras tanto se mantiene la fecha ${fmt(r.minDue)}.${note360}`,r.id); save(); render(); },
-  prioOk:t=>{ const r=R(t.dataset.id); r.priority.status='aprobada'; log(r,'Aprobó la prioridad'); mail([r.requester],`[${r.id}] Prioridad aprobada`,`Hola, ${first(U(r.requester))}:\n\nSe aprobó la prioridad de "${r.title}". Fecha de entrega: ${fmt(r.due)}.${note360}`,r.id); save(); render(); },
-  prioNo:t=>{ const r=R(t.dataset.id); r.priority.status='rechazada'; log(r,'Mantuvo la fecha estándar: '+fmt(r.minDue)); mail([r.requester],`[${r.id}] Fecha de tu solicitud`,`Hola, ${first(U(r.requester))}:\n\nNo fue posible priorizar "${r.title}". La fecha de entrega será ${fmt(r.minDue)}, según el plazo estándar.${note360}`,r.id); r.due = r.minDue; save(); render(); },
+  askPrio:t=>{ const r=R(t.dataset.id); const v=($('#prioIn')||{}).value.trim(); const d=($('#prioDate')||{}).value; if(v.length<10){ toast('Explica el motivo (mínimo 10 letras)'); return; } if(!d){ toast('Elige la fecha'); return; } r.priority={reason:v,status:'pendiente'}; r.due=d; log(r,'Pidió prioridad para '+fmt(d)+': '+v); sync('prioridad',r); mail(supervisors().map(u=>u.id),`[${r.id}] Solicitud de prioridad: ${r.title}`,`${me().name} pide "${r.title}" para ${fmt(d)} (estándar ${fmt(r.minDue)}).\nMotivo: ${v}${note360}`,r.id); mail([me().id],`[${r.id}] Recibimos tu solicitud de prioridad`,`Hola, ${first(me())}:\n\nEl supervisor revisará tu solicitud de prioridad para "${r.title}". Mientras tanto se mantiene la fecha ${fmt(r.minDue)}.${note360}`,r.id); save(); render(); },
+  prioOk:t=>{ const r=R(t.dataset.id); r.priority.status='aprobada'; log(r,'Aprobó la prioridad'); sync('prioridad_aprobada',r); mail([r.requester],`[${r.id}] Prioridad aprobada`,`Hola, ${first(U(r.requester))}:\n\nSe aprobó la prioridad de "${r.title}". Fecha de entrega: ${fmt(r.due)}.${note360}`,r.id); save(); render(); },
+  prioNo:t=>{ const r=R(t.dataset.id); r.priority.status='rechazada'; log(r,'Mantuvo la fecha estándar: '+fmt(r.minDue)); sync('prioridad_rechazada',r); mail([r.requester],`[${r.id}] Fecha de tu solicitud`,`Hola, ${first(U(r.requester))}:\n\nNo fue posible priorizar "${r.title}". La fecha de entrega será ${fmt(r.minDue)}, según el plazo estándar.${note360}`,r.id); r.due = r.minDue; save(); render(); },
   start:t=>{ const r=R(t.dataset.id); r.status='diseno'; log(r,'Inició el diseño'); mail([r.requester],`[${r.id}] Tu solicitud está en diseño`,`Hola, ${first(U(r.requester))}:\n\n${U(r.assignee).name} empezó a trabajar en "${r.title}".${note360}`,r.id); save(); render(); },
-  propose:t=>{ const r=R(t.dataset.id); const v = r.rounds+1; r.proposal = V.propFile ? {name:V.propFile.name,thumb:V.propFile.thumb} : {name:'propuesta_v'+v+'.jpg',thumb:fakeImg('#5149A8','#B9B2F0','Propuesta v'+v+' · '+r.title, r.formats.includes('Vertical 9:16')||r.formats.includes('Feed 4:5')?'v':r.formats.includes('Feed 1:1')?'s':'h')}; V.propFile=null; r.status='aprobacion'; log(r,'Envió propuesta para aprobación: '+r.proposal.name); mail([r.requester],`[${r.id}] Propuesta lista para tu aprobación`,`Hola, ${first(U(r.requester))}:\n\nLa propuesta de "${r.title}" está lista (${r.proposal.name}).\nEntra a Comunicación 360, apruébala o marca sobre la imagen qué cambiar (quedan ${CFG().maxRounds-r.rounds} ronda(s)).`,r.id); save(); render(); },
-  approve:t=>{ const r=R(t.dataset.id); r.status='aprobada'; log(r,'Aprobó la pieza'); mail([r.assignee],`[${r.id}] Pieza aprobada`,`${me().name} aprobó "${r.title}". Puedes hacer la entrega final.${note360}`,r.id); save(); render(); },
-  adjust:t=>{ const r=R(t.dataset.id); document.querySelectorAll('[data-pin]').forEach(i=>{ V.pins[+i.dataset.pin].t = i.value.trim(); }); const pins = V.pins.filter(p=>p.t); if(!pins.length){ toast('Escribe qué cambiar en cada punto'); return; } const note=($('#adjNote')||{}).value.trim(); r.rounds++; r.adjustments.push({round:r.rounds,pins,note}); r.status='ajustes'; log(r,`Pidió ajustes (ronda ${r.rounds}): `+pins.map((p,i)=>(i+1)+'. '+p.t).join(' · ')); mail([r.assignee],`[${r.id}] Ajustes solicitados · ronda ${r.rounds}`,`${me().name} marcó ${pins.length} ajuste(s) en "${r.title}":\n\n${pins.map((p,i)=>(i+1)+'. '+p.t).join('\n')}${note?'\n\nNota: '+note:''}${note360}`,r.id); V.pins=[]; save(); render(); },
-  deliver:t=>{ const r=R(t.dataset.id); const v=($('#finalIn')||{}).value.trim()||'pieza_final.png'; r.finalFile=v; r.status='entregada'; r.delivered=Date.now(); log(r,'Entregó por correo: '+v); mail([r.requester,...supervisors().map(u=>u.id)],`[${r.id}] Entrega final: ${r.title}`,`Hola, ${first(U(r.requester))}:\n\nAdjuntamos la pieza final de "${r.title}".\nArchivo: ${v}\n\nEsta solicitud queda cerrada y archivada.${note360}`,r.id); save(); render(); },
-  devolver:t=>{ const r=R(t.dataset.id); const v=($('#retIn')||{}).value.trim(); if(v.length<5){ toast('Indica qué información falta'); return; } r.status='devuelta'; r.returnReason=v; log(r,'Devolvió la solicitud: '+v); mail([r.requester],`[${r.id}] Falta información en tu solicitud`,`Hola, ${first(U(r.requester))}:\n\nPara avanzar con "${r.title}" necesitamos: ${v}\n\nComplétala desde la plataforma; el plazo cuenta desde que esté completa.${note360}`,r.id); save(); render(); },
+  propose:t=>{ const r=R(t.dataset.id); const v = r.rounds+1; r.proposal = V.propFile ? {name:V.propFile.name,thumb:V.propFile.thumb} : {name:'propuesta_v'+v+'.jpg',thumb:fakeImg('#5149A8','#B9B2F0','Propuesta v'+v+' · '+r.title, r.formats.includes('Vertical 9:16')||r.formats.includes('Feed 4:5')?'v':r.formats.includes('Feed 1:1')?'s':'h')}; V.propFile=null; r.status='aprobacion'; log(r,'Envió propuesta para aprobación: '+r.proposal.name); sync('propuesta',r,{files:[{name:r.proposal.name,mime:'image/jpeg',data:r.proposal.thumb}]}); mail([r.requester],`[${r.id}] Propuesta lista para tu aprobación`,`Hola, ${first(U(r.requester))}:\n\nLa propuesta de "${r.title}" está lista (${r.proposal.name}).\nEntra a Comunicación 360, apruébala o marca sobre la imagen qué cambiar (quedan ${CFG().maxRounds-r.rounds} ronda(s)).`,r.id); save(); render(); },
+  approve:t=>{ const r=R(t.dataset.id); r.status='aprobada'; log(r,'Aprobó la pieza'); sync('aprobada',r); mail([r.assignee],`[${r.id}] Pieza aprobada`,`${me().name} aprobó "${r.title}". Puedes hacer la entrega final.${note360}`,r.id); save(); render(); },
+  adjust:t=>{ const r=R(t.dataset.id); document.querySelectorAll('[data-pin]').forEach(i=>{ V.pins[+i.dataset.pin].t = i.value.trim(); }); const pins = V.pins.filter(p=>p.t); if(!pins.length){ toast('Escribe qué cambiar en cada punto'); return; } const note=($('#adjNote')||{}).value.trim(); r.rounds++; r.adjustments.push({round:r.rounds,pins,note}); r.status='ajustes'; log(r,`Pidió ajustes (ronda ${r.rounds}): `+pins.map((p,i)=>(i+1)+'. '+p.t).join(' · ')); sync('ajustes',r,{pins,note}); mail([r.assignee],`[${r.id}] Ajustes solicitados · ronda ${r.rounds}`,`${me().name} marcó ${pins.length} ajuste(s) en "${r.title}":\n\n${pins.map((p,i)=>(i+1)+'. '+p.t).join('\n')}${note?'\n\nNota: '+note:''}${note360}`,r.id); V.pins=[]; save(); render(); },
+  deliver:t=>{ const r=R(t.dataset.id); const f = V.propFile || (r.proposal?{name:r.proposal.name.replace(/propuesta_v\d+/,'final'),thumb:r.proposal.thumb}:null); const v = f?f.name:'pieza_final.png'; r.finalFile=v; if(f) r.finalThumb=f.thumb; V.propFile=null; r.status='entregada'; r.delivered=Date.now(); log(r,'Entregó por correo: '+v); sync('entrega',r,{files:f?[{name:f.name,mime:'image/jpeg',data:f.thumb}]:[]}); mail([r.requester,...supervisors().map(u=>u.id)],`[${r.id}] Entrega final: ${r.title}`,`Hola, ${first(U(r.requester))}:\n\nAdjuntamos la pieza final de "${r.title}".\nArchivo: ${v}\n\nEsta solicitud queda cerrada y archivada.${note360}`,r.id); save(); render(); },
+  devolver:t=>{ const r=R(t.dataset.id); const v=($('#retIn')||{}).value.trim(); if(v.length<5){ toast('Indica qué información falta'); return; } r.status='devuelta'; r.returnReason=v; log(r,'Devolvió la solicitud: '+v); sync('devuelta',r,{reason:v}); mail([r.requester],`[${r.id}] Falta información en tu solicitud`,`Hola, ${first(U(r.requester))}:\n\nPara avanzar con "${r.title}" necesitamos: ${v}\n\nComplétala desde la plataforma; el plazo cuenta desde que esté completa.${note360}`,r.id); save(); render(); },
   resend:t=>{ const r=R(t.dataset.id); const v=($('#resIn')||{}).value.trim(); if(v.length<3){ toast('Completa la información'); return; } r.context += '\n\nInformación adicional: '+v; r.status = r.assignee?'asignada':'recibida'; r.returnReason=null; r.minDue = iso(addBiz(today(),SLA(r.type))); if(r.due<r.minDue && !(r.priority&&r.priority.status==='aprobada')) r.due=r.minDue; log(r,'Completó la información: '+v); mail([...supervisors().map(u=>u.id),r.assignee],`[${r.id}] Solicitud completada`,`${me().name} completó la información de "${r.title}".${note360}`,r.id); save(); render(); },
   cancelReq:t=>{ const r=R(t.dataset.id); if(!confirm('¿Cancelar esta solicitud?')) return; r.status='cancelada'; r.cancelReason='Cancelada por el solicitante.'; log(r,'Canceló la solicitud'); mail(supervisors().map(u=>u.id),`[${r.id}] Solicitud cancelada`,`${me().name} canceló "${r.title}".`,r.id); save(); render(); },
   cancelDir:t=>{ const r=R(t.dataset.id); const v=($('#canIn')||{}).value.trim(); if(v.length<5){ toast('Escribe el motivo'); return; } r.status='cancelada'; r.cancelReason=v; log(r,'Canceló la solicitud: '+v); mail([r.requester,r.assignee],`[${r.id}] Solicitud cancelada`,`"${r.title}" fue cancelada.\nMotivo: ${v}${note360}`,r.id); save(); render(); },
@@ -1258,13 +1316,14 @@ document.addEventListener('change', e => {
   const t = e.target;
   if(t.dataset.change==='assign'){ assign(R(t.dataset.id), t.value); }
   if(t.dataset.wd){ W.d[t.dataset.wd] = t.value; render(); }
+  if(t.dataset.integ){ const k=t.dataset.integ; INTEG[k] = k==='on' ? t.checked : t.value.trim(); saveInteg(); toast('Integración guardada'); }
   if(t.dataset.cfg){ const k = t.dataset.cfg; if(k==='holidays') S.cfg.holidays = t.value.split('\n').map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)); else if(k.startsWith('sla.')) S.cfg.sla[k.slice(4)] = Math.max(1,+t.value||1); else S.cfg[k] = Math.max(1,+t.value||1); save(); toast('Configuración guardada'); }
   if(t.id==='fileIn'){
     const files = [...t.files];
     Promise.all(files.map(f => new Promise(res => {
       if(!f.type.startsWith('image/')) return res({name:f.name,size:f.size});
       const rd = new FileReader();
-      rd.onload = () => { const img = new Image(); img.onload = () => { const max = V.pickFor==='prop'?900:96; const c = document.createElement('canvas'), s = Math.min(1,max/Math.max(img.width,img.height)); c.width = Math.max(1,Math.round(img.width*s)); c.height = Math.max(1,Math.round(img.height*s)); c.getContext('2d').drawImage(img,0,0,c.width,c.height); res({name:f.name,size:f.size,thumb:c.toDataURL('image/jpeg',.8)}); }; img.onerror = () => res({name:f.name,size:f.size}); img.src = rd.result; };
+      rd.onload = () => { const img = new Image(); img.onload = () => { const max = V.pickFor==='wizard'?1000:1200; const c = document.createElement('canvas'), s = Math.min(1,max/Math.max(img.width,img.height)); c.width = Math.max(1,Math.round(img.width*s)); c.height = Math.max(1,Math.round(img.height*s)); c.getContext('2d').drawImage(img,0,0,c.width,c.height); res({name:f.name,size:f.size,mime:f.type,thumb:c.toDataURL('image/jpeg',.78)}); }; img.onerror = () => res({name:f.name,size:f.size}); img.src = rd.result; };
       rd.onerror = () => res({name:f.name,size:f.size}); rd.readAsDataURL(f);
     }))).then(arr => { if(V.pickFor==='prop'){ V.propFile = arr.find(a=>a.thumb)||null; } else W.d.files.push(...arr); t.value=''; render(); });
   }
@@ -1278,7 +1337,7 @@ document.addEventListener('input', e => {
 document.addEventListener('keydown', e => {
   if((e.metaKey||e.ctrlKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); const q = $('#q'); if(q){ q.focus(); q.select(); } }
   if(e.key==='Enter' && e.target.id==='q'){ V.filter='all'; go('list'); setTimeout(()=>{ const q=$('#q'); if(q){ q.focus(); q.setSelectionRange(q.value.length,q.value.length); } }); }
-  if(e.key==='Escape' && (V.menu||V.side||V.lb)){ V.menu=false; V.side=false; V.lb=null; render(); }
+  if(e.key==='Escape' && (V.menu||V.side||V.lb||V.lbimg)){ V.menu=false; V.side=false; V.lb=null; V.lbimg=null; render(); }
 });
 document.addEventListener('submit', e => {
   if(e.target.dataset.form==='login'){
