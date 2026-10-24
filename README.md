@@ -8,3 +8,8 @@ Plataforma interna para gestionar solicitudes de diseño: solicitar → prioriza
 - Perfiles: solicitante, diseñador, supervisor. El perfil con etiqueta "dev" ve Configuración.
 
 Identidad: ver `../01_IDENTIDAD`. Paleta Navy #093169 · Azul #0F50AC · Señal #146CE8 · Papel #F6F8FB. Tipografía Archivo (Google Fonts).
+
+## Identidad v1 (24 oct 2026)
+- Símbolo de cápsulas (`assets/simbolo.svg`), logotipo Kurdis (Regular + 360 SemiBold), interfaz en Grift.
+- Fuentes autoalojadas en `assets/fonts/` (solo los pesos usados). Verificar licencia web de Kurdis y Grift antes de un despliegue público definitivo.
+- Animación del lobby: `assets/lobby.gif`.
