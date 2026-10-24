@@ -285,6 +285,11 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .opt.fmt{flex-direction:row;align-items:center;min-height:0;padding:12px 14px}
 .opt.fmt .oi{width:52px;height:52px;border-radius:14px}
 .chip .ic{width:16px;height:16px}
+/* ---------- intro ---------- */
+#intro{position:fixed;inset:0;z-index:200;background:#F6F8FB;display:grid;place-items:center;transition:opacity .5s ease}
+#intro[hidden]{display:none}
+#intro.out{opacity:0;pointer-events:none}
+#intro video{width:min(100vw,1280px);max-height:100vh;object-fit:cover;object-position:center}
 /* ---------- toasts ---------- */
 #toasts{position:fixed;right:24px;bottom:24px;display:flex;flex-direction:column;gap:8px;z-index:100}
 .toast{display:flex;align-items:center;gap:10px;background:var(--navy);color:#fff;padding:12px 16px;border-radius:14px;font-size:14px;box-shadow:var(--shadow);animation:tin .3s ease}
@@ -449,6 +454,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 </head>
 <body>
 <div id="root"></div>
+<div id="intro" hidden><video id="introVid" src="assets/intro.mp4" muted playsinline preload="auto"></video></div>
 <div id="toasts" aria-live="polite"></div>
 <input type="file" id="fileIn" multiple hidden>
 <script>
@@ -645,7 +651,7 @@ function saveInteg(){ try{ localStorage.setItem(IKEY, JSON.stringify(INTEG)); }c
 async function sync(action, r, extra){
   if(!INTEG.on || !INTEG.url) return;
   const u = id => { const x = U(id); return x ? {name:x.name,email:x.email,area:x.area} : null; };
-  const payload = {action, gestor:INTEG.gestor, org:S.org, request:{id:r.id,title:r.title,type:TY(r.type).label,formats:r.formats.map(f=>FMT[f]?FMT[f].name:f),objective:r.objective,audience:r.audience,context:r.context,pieceText:r.pieceText,logos:r.logos,refLink:r.refLink,due:r.due,minDue:r.minDue,status:ST[r.status].l,priority:r.priority,requester:u(r.requester),assignee:u(r.assignee),rounds:r.rounds,driveUrl:r.driveUrl,queuePos:qpos(r)+1,queueLen:queue().length}, ...(extra||{})};
+  const payload = {action, gestor:INTEG.gestor, org:S.org, request:{id:r.id,title:r.title,type:TY(r.type).label,formats:r.formats.map(f=>FMT[f]?FMT[f].name:f),objective:r.objective,audience:r.audience,context:r.context,pieceText:r.pieceText,logos:r.logos,refLink:r.refLink,due:r.due,minDue:r.minDue,status:ST[r.status].l,priority:r.priority,requester:u(r.requester),assignee:u(r.assignee),rounds:r.rounds,driveUrl:r.driveUrl,queuePos:qpos(r)+1,queueLen:queue().length,history:historyText(r)}, ...(extra||{})};
   toast('Sincronizando con Google…');
   try{
     const res = await fetch(INTEG.url, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload)});
@@ -682,6 +688,7 @@ function seed(preset){
     if(['aprobada','entregada'].includes(r.status)) add(r.requester,'Aprobó la pieza');
     if(r.status==='entregada') add(r.assignee,'Entregó por correo: '+r.finalFile);
     if(r.status==='devuelta') add(sup,'Devolvió la solicitud: '+r.returnReason);
+    const m0 = mails.find(x=>x.reqId===id); if(m0) m0.body += '\n\n— Historial de la solicitud —\n' + r.history.map(e=>`${fmtT(e.at)} · ${first(users.find(u=>u.id===e.by))} · ${e.a}`).join('\n');
     reqs.push(r);
   };
   const IMGS = [
@@ -732,9 +739,12 @@ function slaChip(r){
   return chip('Faltan '+n+' días háb.','green');
 }
 function log(r,a){ r.history.push({at:Date.now(),by:S.session,a}); }
+function historyText(r){ return r.history.map(e=>`${fmtT(e.at)} · ${first(U(e.by))||'Sistema'} · ${e.a}`).join('\n'); }
 function mail(toIds, subject, body, reqId){
   const to = [...new Set(toIds.filter(Boolean))].map(id=>U(id)).filter(Boolean);
   if(!to.length) return;
+  const rq = reqId && R(reqId);
+  if(rq) body += '\n\n— Historial de la solicitud —\n' + historyText(rq) + (rq.driveUrl ? '\nCarpeta en Drive: '+rq.driveUrl : '');
   S.mails.unshift({id:uid(),at:Date.now(),from:'comunicaciones@'+S.domain,to:to.map(u=>u.email).join(', '),subject,body,reqId});
   toast('Correo enviado a '+to.map(first).join(', '));
 }
@@ -752,6 +762,16 @@ function render(){
   const old = $('.content'); const st = old ? old.scrollTop : 0;
   root.innerHTML = shell() + lightboxHTML();
   const c = $('.content'); if(c){ if(V._top){ c.scrollTop = 0; V._top = false; } else c.scrollTop = st; }
+}
+// Al iniciar sesión: muestra la animación del logo (6 s) mientras se carga el espacio de trabajo.
+function intro(then){
+  const box = $('#intro'), v = $('#introVid'); if(!box || !v){ then(); return; }
+  box.hidden = false; box.classList.remove('out');
+  let done = false; const finish = () => { if(done) return; done = true; box.classList.add('out'); setTimeout(()=>{ box.hidden = true; }, 520); };
+  v.currentTime = 0; const p = v.play(); if(p && p.catch) p.catch(()=>{});
+  then(); // la app se construye detrás de la cortina
+  v.onended = finish; setTimeout(finish, 6500);
+  box.onclick = finish;
 }
 function go(route, extra){ Object.assign(V,{route,menu:false,side:false,_top:true,pins:[]},extra||{}); if(route==='new' && !extra?.keep) resetW(); render(); }
 
@@ -797,8 +817,8 @@ function navItems(){
   const items = {
     solicitante:[['home','home','Mis solicitudes',mineAct],['new','plus','Nueva solicitud'],['mail','mail','Correos']],
     disenador:[['home','home','Inicio'],['board','board','Mi tablero',board],['list','inbox','Mis asignaciones',mineAct],['mail','mail','Correos']],
-    supervisor:[['home','chart','Tablero de control'],['list','inbox','Todas las solicitudes',queue().length],['board','board','Tablero del equipo'],['new','plus','Nueva solicitud'],['mail','mail','Correos']],
-    director:[['home','chart','Tablero de control'],['list','inbox','Todas las solicitudes',queue().length],['board','board','Tablero del equipo'],['new','plus','Nueva solicitud'],['mail','mail','Correos']]
+    supervisor:[['home','chart','Tablero de control'],['list','inbox','Todas las solicitudes',queue().length],['board','board','Tablero del equipo'],['balance','chart','Balance'],['new','plus','Nueva solicitud'],['mail','mail','Correos']],
+    director:[['home','chart','Tablero de control'],['list','inbox','Todas las solicitudes',queue().length],['board','board','Tablero del equipo'],['balance','chart','Balance'],['new','plus','Nueva solicitud'],['mail','mail','Correos']]
   }[m.role];
   if(m.role==='disenador') items.push(['new','plus','Nueva solicitud']);
   if(CAN.dev(m)) items.push(['cfg','cog','Configuración']);
@@ -809,7 +829,9 @@ const FILTERS = {
   aprobacion:['En aprobación',r=>['aprobacion','ajustes','aprobada'].includes(r.status),'#B3ADEB'], devuelta:['Devueltas',r=>r.status==='devuelta','#E8B23A'],
   entregada:['Entregadas',r=>r.status==='entregada','#8C93F2'], cancelada:['Canceladas',r=>r.status==='cancelada','#B9B9B5'],
   prioridad:['Prioridades',r=>r.priority&&r.priority.status==='pendiente','#E2603A'],
-  riesgo:['En riesgo',r=>ACTIVE.includes(r.status)&&bizDiff(today(),pISO(effDue(r)))<=1,'#C2392C']
+  riesgo:['En riesgo',r=>ACTIVE.includes(r.status)&&bizDiff(today(),pISO(effDue(r)))<=1,'#C2392C'],
+  porasignar:['Por asignar',r=>['recibida','revision'].includes(r.status),'#146CE8'],
+  encurso:['En curso',r=>['asignada','diseno','aprobacion','ajustes','aprobada'].includes(r.status),'#7B72C8']
 };
 function filterFn(f){ if(f.startsWith('d:')) return r=>r.assignee===f.slice(2)&&ACTIVE.includes(r.status); if(f.startsWith('a:')) return r=>r.area===f.slice(2); return (FILTERS[f]||FILTERS.all)[1]; }
 function filterLabel(f){ if(f.startsWith('d:')) return 'Asignadas a '+first(U(f.slice(2))); if(f.startsWith('a:')) return f.slice(2); return (FILTERS[f]||FILTERS.all)[0]; }
@@ -824,7 +846,7 @@ function treeHTML(){
   } else {
     const areas = [...new Set(S.reqs.map(r=>r.area))].sort();
     out = `<div class="sec"><span>ESTADOS</span><button class="btn ghost icon" data-a="go" data-r="new" aria-label="Nueva solicitud">${ic('plus',16)}</button></div>
-      <div class="tree">${node('all','Todas','#4A4A47')}${node('curso','En curso','#7B72C8',1)}${node('aprobacion','En aprobación','#B3ADEB',1)}${node('devuelta','Devueltas','#E8B23A',1)}${node('entregada','Entregadas','#8C93F2',1)}${node('cancelada','Canceladas','#B9B9B5',1)}${node('prioridad','Prioridades por aprobar','#E2603A')}${node('riesgo','En riesgo','#C2392C')}</div>
+      <div class="tree">${node('porasignar','Por asignar','#146CE8')}${node('encurso','En curso','#7B72C8')}${node('aprobacion','En aprobación','#B3ADEB',1)}${node('devuelta','Devueltas','#E8B23A',1)}${node('prioridad','Prioridades por aprobar','#E2603A')}${node('riesgo','En riesgo','#C2392C')}${node('entregada','Histórico de entregas','#8C93F2')}${node('cancelada','Canceladas','#B9B9B5',1)}${node('all','Todas','#4A4A47')}</div>
       <div class="sec"><span>EQUIPO</span></div><div class="tree">${designers().map(d=>`<a data-a="go" data-r="list" data-f="d:${d.id}" class="${V.route==='list'&&V.filter==='d:'+d.id?'on':''}"><span class="person">${avatar(d,22)}</span><span class="trunc">${h(d.name)}</span><span class="count">${n('d:'+d.id)}</span></a>`).join('')}</div>
       <div class="sec"><span>ÁREAS</span></div><div class="tree">${areas.map(a=>node('a:'+a,a,'#B9B9B5')).join('')}</div>`;
   }
@@ -836,7 +858,7 @@ function menuHTML(){
     <hr><button data-a="reset">${ic('reset',18)}<span>Restablecer datos de la demo</span></button>
     <button data-a="logout">${ic('out',18)}<span>Cerrar sesión</span></button></div>`;
 }
-const CRUMB = {home:'Inicio',new:'Nueva solicitud',sent:'Solicitud enviada',list:'Solicitudes',detail:'Solicitud',board:'Tablero',mail:'Correos',cfg:'Configuración'};
+const CRUMB = {home:'Inicio',new:'Nueva solicitud',sent:'Solicitud enviada',list:'Solicitudes',detail:'Solicitud',board:'Tablero',mail:'Correos',cfg:'Configuración',balance:'Balance'};
 function shell(){
   const m = me();
   let crumb = `<span class="faint hide-m">${h(S.short)}</span><span class="hide-m">${ic('chev',16)}</span><span>${V.route==='list'?filterLabel(V.filter):CRUMB[V.route]}</span>`;
@@ -868,6 +890,7 @@ function content(){
     case 'board': return boardView();
     case 'mail': return mailView();
     case 'cfg': return cfgView();
+    case 'balance': return balanceView();
   }
   return '';
 }
@@ -996,11 +1019,12 @@ function dashView(){
   const ar = Object.entries(areas).sort((a,b)=>b[1]-a[1]); const maxA = Math.max(1,...ar.map(x=>x[1]));
   const opts = r => `<select class="in sel" data-change="assign" data-id="${r.id}"><option value="">Asignar a…</option>${designers().map(d=>`<option value="${d.id}" ${r.assignee===d.id?'selected':''}>${h(d.name)} (${load.find(x=>x.d.id===d.id).n})${d.video?' · video':''}</option>`).join('')}</select>`;
   return `<div class="head"><div><h1 class="big">Tablero de control</h1><p class="lead">${act.length} activas, ${unas.length} por asignar, ${prio.length} prioridad${prio.length===1?'':'es'} por decidir y ${risk.length} en riesgo de vencerse.</p></div><button class="btn" data-a="go" data-r="list">${ic('inbox',18)} Ver todas</button></div>
-    <div class="folders" style="margin-top:28px">
-      <button class="folder" data-a="go" data-r="list" data-f="curso">${folderArt('teal',unas.length+' por asignar',designers())}<b>En curso</b><span>${act.length} activas · ${designers().length} diseñadores</span></button>
+    <div class="folders" style="margin-top:28px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">
+      <button class="folder" data-a="go" data-r="list" data-f="porasignar">${folderArt('silver',unas.length+' en fila')}<b>Por asignar</b><span>${unas.length} esperando diseñador</span></button>
+      <button class="folder" data-a="go" data-r="list" data-f="encurso">${folderArt('teal',(act.length-unas.length)+' activas',designers())}<b>En curso</b><span>Asignadas, en diseño o en aprobación</span></button>
       <button class="folder" data-a="go" data-r="list" data-f="prioridad">${folderArt('coral',prio.length+' por decidir')}<b>Prioridades</b><span>Requieren tu aprobación</span></button>
-      <button class="folder" data-a="go" data-r="list" data-f="riesgo">${folderArt('amber',risk.length+' en riesgo')}<b>En riesgo</b><span>Vencen en 1 día hábil o menos</span></button>
-      <button class="folder" data-a="go" data-r="list" data-f="entregada">${folderArt('silver','Archivo')}<b>Entregadas</b><span>${del.length} piezas archivadas</span></button>
+      <button class="folder" data-a="go" data-r="list" data-f="riesgo">${folderArt('amber',risk.length+' en riesgo')}<b>En riesgo</b><span>Vencen en 1 día hábil o menos, sin entregar</span></button>
+      <button class="folder" data-a="go" data-r="list" data-f="entregada">${folderArt('violet',del.length+' piezas')}<b>Histórico de entregas</b><span>Todo lo entregado, por fecha</span></button>
     </div>
     <div class="kpis">
       <div class="kpi"><small>Recibidas este mes</small><b>${month}</b><em>Todas las áreas</em></div>
@@ -1009,7 +1033,7 @@ function dashView(){
       <div class="kpi"><small>Entregadas a tiempo</small><b>${del.length?Math.round(ontime/del.length*100)+'%':'—'}</b><em>${ontime} de ${del.length} entregas</em></div>
     </div>
     <div class="split" style="margin-top:24px">
-      <div class="card"><h3>Por asignar</h3>${unas.length?unas.map(r=>`<div class="qrow"><div style="min-width:0"><b class="trunc" data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(U(r.requester).name)} · ${h(r.area)} · ${fmt(effDue(r))}${r.priority&&r.priority.status==='pendiente'?' · <span style="color:var(--flag)">prioridad</span>':''}</small></div>${opts(r)}</div>`).join(''):'<div class="empty">Nada por asignar.</div>'}</div>
+      <div class="card"><h3>Por asignar <span class="faint" style="font-weight:400;font-size:14px">· en orden de entrega</span></h3>${unas.length?unas.map(r=>`<div class="qrow"><div style="min-width:0"><b class="trunc" data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(U(r.requester).name)} · ${h(r.area)} · ${fmt(effDue(r))}${r.priority&&r.priority.status==='pendiente'?' · <span style="color:var(--flag)">prioridad</span>':''}</small></div>${opts(r)}</div>`).join(''):'<div class="empty">Nada por asignar.</div>'}</div>
       <div class="card"><h3>Prioridades por aprobar</h3>${prio.length?prio.map(r=>`<div class="qrow" style="grid-template-columns:1fr"><div><b data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(first(U(r.requester)))} pide ${fmt(r.due)} · estándar ${fmt(r.minDue)}</small><div class="note">${h(r.priority.reason)}</div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn sm pri" data-a="prioOk" data-id="${r.id}">${ic('check',14)} Aprobar</button><button class="btn sm" data-a="prioNo" data-id="${r.id}">Mantener fecha estándar</button></div></div></div>`).join(''):'<div class="empty">Sin prioridades pendientes.</div>'}</div>
       <div class="card"><h3>Carga del equipo</h3><div class="bars">${load.map(x=>`<div class="bar"><span class="trunc">${h(x.d.name)}</span><div class="tr"><div class="fl" style="width:${x.n/maxL*100}%"></div></div><b>${x.n}</b></div>`).join('')}</div><p class="faint" style="font-size:12.5px;margin-top:14px">Solicitudes activas por persona. Toca un nombre en el menú lateral para ver sus piezas.</p></div>
       <div class="card"><h3>Solicitudes por área</h3><div class="bars">${ar.map(([a,n])=>`<div class="bar"><span class="trunc">${h(a)}</span><div class="tr"><div class="fl" style="width:${n/maxA*100}%;background:var(--teal)"></div></div><b>${n}</b></div>`).join('')}</div></div>
@@ -1017,11 +1041,41 @@ function dashView(){
     <h2>Actividad reciente</h2>${activityHTML(all,5)}`;
 }
 
+/* ---------- balance (supervisor) ---------- */
+function balanceView(){
+  const all = S.reqs, T = today();
+  const months = {}; all.forEach(r=>{ const k = iso(r.created).slice(0,7); months[k] = months[k]||{req:0,del:0}; months[k].req++; if(r.status==='entregada') months[k].del++; });
+  const mk = Object.keys(months).sort().slice(-6), maxM = Math.max(1,...mk.map(k=>months[k].req));
+  const del = all.filter(r=>r.status==='entregada');
+  const turn = del.map(r=>bizDiff(new Date(r.created), new Date(r.delivered)));
+  const avgTurn = turn.length ? (turn.reduce((a,b)=>a+b,0)/turn.length).toFixed(1) : '—';
+  const ontime = del.filter(r=>iso(r.delivered)<=r.due).length;
+  const rounds = all.filter(r=>r.proposal); const avgRounds = rounds.length ? (rounds.reduce((a,r)=>a+r.rounds,0)/rounds.length).toFixed(1) : '—';
+  const noAdj = rounds.length ? Math.round(rounds.filter(r=>r.rounds===0).length/rounds.length*100) : 0;
+  const by = (key, label) => { const m = {}; all.forEach(r=>{ const k = key(r); if(!k) return; m[k] = m[k]||{n:0,del:0,adj:0}; m[k].n++; if(r.status==='entregada') m[k].del++; m[k].adj += r.rounds; }); return Object.entries(m).sort((a,b)=>b[1].n-a[1].n); };
+  const areas = by(r=>r.area), types = by(r=>TY(r.type).label), des = by(r=>r.assignee && U(r.assignee) && U(r.assignee).name);
+  const bars = (rows, color) => { const mx = Math.max(1,...rows.map(x=>x[1].n)); return `<div class="bars">${rows.map(([k,v])=>`<div class="bar"><span class="trunc" title="${h(k)}">${h(k)}</span><div class="tr"><div class="fl" style="width:${v.n/mx*100}%;background:${color}"></div></div><b>${v.n}</b></div>`).join('')}</div>`; };
+  const prio = all.filter(r=>r.priority).length, prioOk = all.filter(r=>r.priority&&r.priority.status==='aprobada').length;
+  return `<div class="head"><div><h1 class="big">Balance</h1><p class="lead">Cómo se comporta la demanda y el equipo. Con datos de la demo los números son ilustrativos; con uso real se vuelven el argumento para pedir recursos o ajustar plazos.</p></div><button class="btn" data-a="exportCsv">${ic('copy',16)} Exportar CSV</button></div>
+    <div class="kpis">
+      <div class="kpi"><small>Piezas este mes</small><b>${(months[iso(T).slice(0,7)]||{req:0}).req}</b><em>${(months[iso(T).slice(0,7)]||{del:0}).del} entregadas</em></div>
+      <div class="kpi"><small>Tiempo promedio</small><b>${avgTurn}</b><em>días hábiles de solicitud a entrega</em></div>
+      <div class="kpi"><small>Entregadas a tiempo</small><b>${del.length?Math.round(ontime/del.length*100)+'%':'—'}</b><em>${ontime} de ${del.length}</em></div>
+      <div class="kpi"><small>Rondas de ajustes</small><b>${avgRounds}</b><em>${noAdj}% aprobadas sin cambios</em></div>
+      <div class="kpi"><small>Prioridades</small><b>${prio}</b><em>${prioOk} aprobadas · ${prio-prioOk} negadas o pendientes</em></div>
+    </div>
+    <div class="split" style="margin-top:24px">
+      <div class="card"><h3>Solicitudes por mes</h3><div class="bars">${mk.map(k=>`<div class="bar"><span>${k}</span><div class="tr"><div class="fl" style="width:${months[k].req/maxM*100}%"></div></div><b>${months[k].req}</b></div>`).join('')||'<div class="empty">Sin datos</div>'}</div><p class="faint" style="font-size:12.5px;margin-top:14px">Recibidas en el mes; la barra crece con el uso real.</p></div>
+      <div class="card"><h3>Qué áreas piden más</h3>${bars(areas,'var(--teal)')}<p class="faint" style="font-size:12.5px;margin-top:14px">Las áreas se toman de la cuenta de cada solicitante; se ajustan por empresa en Configuración.</p></div>
+      <div class="card"><h3>Tipos de pieza</h3>${bars(types,'var(--violet)')}</div>
+      <div class="card"><h3>Carga por diseñador</h3>${bars(des,'var(--brand)')}<p class="faint" style="font-size:12.5px;margin-top:14px">Total histórico asignado, con ajustes acumulados: ${des.map(([k,v])=>h(first({name:k}))+' '+v.adj).join(' · ')||'—'}.</p></div>
+    </div>`;
+}
 /* ---------- lista ---------- */
 function listRows(){
   const m = me(), f = filterFn(V.filter), q = V.q.trim().toLowerCase();
   const rows = visible().filter(f).filter(r=>!q || (r.id+' '+r.title+' '+r.area+' '+U(r.requester).name+' '+TY(r.type).label).toLowerCase().includes(q))
-    .sort((a,b)=>{ const A=ACTIVE.includes(a.status), B=ACTIVE.includes(b.status); if(A!==B) return A?-1:1; return A ? effDue(a).localeCompare(effDue(b)) : b.created-a.created; });
+    .sort((a,b)=>{ if(V.filter==='entregada') return (b.delivered||0)-(a.delivered||0); const A=ACTIVE.includes(a.status), B=ACTIVE.includes(b.status); if(A!==B) return A?-1:1; return A ? effDue(a).localeCompare(effDue(b)) : b.created-a.created; });
   if(!rows.length) return '<div class="empty">No hay solicitudes aquí.</div>';
   return rows.map(r=>{
     const p = qpos(r);
@@ -1234,6 +1288,7 @@ function cfgView(){
     <div class="card" style="margin-top:24px"><h3>Plazos mínimos por tipo (días hábiles)</h3><div class="cfg">${TYPES.map(t=>`<label><span>${ic(t.icon,16)} ${t.label}</span><input class="in" type="number" min="1" max="30" data-cfg="sla.${t.id}" value="${c.sla[t.id]}"></label>`).join('')}</div></div>
     <div class="card"><h3>Reglas</h3><div class="cfg"><label><span>Rondas de ajustes permitidas</span><input class="in" type="number" min="1" max="5" data-cfg="maxRounds" value="${c.maxRounds}"></label><label><span>Dominio de correo</span><b style="font-weight:500">@${h(S.domain)}</b></label><label><span>Buzón remitente</span><b style="font-weight:500">comunicaciones@</b></label></div></div>
     <div class="card"><h3>Festivos que no cuentan como día hábil</h3><p class="faint" style="font-size:13px;margin-top:-6px">Uno por línea, formato AAAA-MM-DD. Verificar contra el calendario oficial.</p><textarea class="in" data-cfg="holidays" style="font-family:ui-monospace,Menlo,monospace;font-size:13px">${c.holidays.join('\n')}</textarea></div>
+    <div class="card"><h3>Áreas que pueden solicitar</h3><p class="faint" style="font-size:13px;margin-top:-6px">Una por línea. En producción salen del directorio de la empresa; aquí se usan para el balance.</p><textarea class="in" data-cfg="areas">${h((CFG().areas||[...new Set(S.users.filter(u=>u.role==='solicitante').map(u=>u.area))]).join('\n'))}</textarea></div>
     <div class="card"><h3>Equipo</h3><div class="lhead" style="grid-template-columns:1fr 1fr 1fr 1fr"><span>Nombre</span><span>Rol</span><span>Área</span><span>Correo</span></div>${S.users.map(u=>`<div class="lrow" style="grid-template-columns:1fr 1fr 1fr 1fr;cursor:default"><span class="trunc">${h(u.name)}${u.dev?' <span class="devtag">dev</span>':''}</span><span>${ROLE[u.role]}${u.designs?' · diseña':''}${u.video?' · video':''}</span><span class="trunc">${h(u.area)}</span><span class="trunc faint">${h(u.email)}</span></div>`).join('')}</div>
     <div class="card" style="border-color:var(--teal-soft)"><h3>Integración con Google (Drive + Gmail)</h3><p class="muted" style="font-size:14px;margin-top:-6px">Pega la URL del Apps Script desplegado (ver <code>integracion/README.md</code>). Con esto cada solicitud crea su carpeta en Drive y envía correos reales desde la cuenta que desplegó el script.</p>
       <div class="field"><label>URL del web app</label><input class="in" data-integ="url" value="${h(INTEG.url)}" placeholder="https://script.google.com/macros/s/…/exec"></div>
@@ -1263,7 +1318,7 @@ const ACT = {
   switch:t=>{ S.session=t.dataset.id; save(); go('home'); },
   logout:()=>{ S.session=null; save(); V.menu=false; render(); },
   reset:()=>{ if(confirm('¿Restablecer los datos de la demo? Se perderán los cambios.')){ const s = S.session; S = seed(S.preset); S.session = s; save(); go('home'); } },
-  demo:t=>{ S.session=t.dataset.id; save(); go('home'); },
+  demo:t=>{ S.session=t.dataset.id; save(); intro(()=>go('home')); },
   preset:t=>{ if(t.dataset.p===S.preset) return; S = seed(t.dataset.p); save(); render(); },
   filter:t=>{ V.filter=t.dataset.f; render(); },
   clearq:()=>{ V.q=''; render(); },
@@ -1277,6 +1332,7 @@ const ACT = {
   pick:()=>{ V.pickFor='wizard'; $('#fileIn').click(); },
   pickProp:()=>{ V.pickFor='prop'; $('#fileIn').click(); },
   pinRm:t=>{ V.pins.splice(+t.dataset.i,1); render(); },
+  exportCsv:()=>{ const rows=[['id','titulo','tipo','area','solicitante','disenador','estado','creada','requerida','entregada','rondas','prioridad']]; S.reqs.forEach(r=>rows.push([r.id,r.title,TY(r.type).label,r.area,U(r.requester).name,r.assignee?U(r.assignee).name:'',ST[r.status].l,iso(r.created),r.due,r.delivered?iso(r.delivered):'',r.rounds,r.priority?r.priority.status:''])); const csv=rows.map(x=>x.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'); const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download='comunicacion360_balance.csv'; a.click(); },
   pingInteg:async()=>{ const o=$('#pingOut'); if(!INTEG.url){ o.textContent='Falta la URL'; return; } o.textContent='Probando…'; try{ const r=await fetch(INTEG.url+(INTEG.url.includes('?')?'&':'?')+'ping=1'); const j=await r.json(); o.textContent='OK · '+(j.account||'conectado')+(j.root?' · carpeta: '+j.root:''); }catch(e){ o.textContent='Sin respuesta: '+e.message; } },
   wType:t=>{ W.d.type=t.dataset.v; render(); },
   wFmt:t=>{ const v=t.dataset.v, a=W.d.formats; a.includes(v)?a.splice(a.indexOf(v),1):a.push(v); render(); },
@@ -1317,7 +1373,7 @@ document.addEventListener('change', e => {
   if(t.dataset.change==='assign'){ assign(R(t.dataset.id), t.value); }
   if(t.dataset.wd){ W.d[t.dataset.wd] = t.value; render(); }
   if(t.dataset.integ){ const k=t.dataset.integ; INTEG[k] = k==='on' ? t.checked : t.value.trim(); saveInteg(); toast('Integración guardada'); }
-  if(t.dataset.cfg){ const k = t.dataset.cfg; if(k==='holidays') S.cfg.holidays = t.value.split('\n').map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)); else if(k.startsWith('sla.')) S.cfg.sla[k.slice(4)] = Math.max(1,+t.value||1); else S.cfg[k] = Math.max(1,+t.value||1); save(); toast('Configuración guardada'); }
+  if(t.dataset.cfg){ const k = t.dataset.cfg; if(k==='holidays') S.cfg.holidays = t.value.split('\n').map(x=>x.trim()).filter(x=>/^\d{4}-\d{2}-\d{2}$/.test(x)); else if(k==='areas') S.cfg.areas = t.value.split('\n').map(x=>x.trim()).filter(Boolean); else if(k.startsWith('sla.')) S.cfg.sla[k.slice(4)] = Math.max(1,+t.value||1); else S.cfg[k] = Math.max(1,+t.value||1); save(); toast('Configuración guardada'); }
   if(t.id==='fileIn'){
     const files = [...t.files];
     Promise.all(files.map(f => new Promise(res => {
@@ -1346,7 +1402,7 @@ document.addEventListener('submit', e => {
     if(!email.endsWith('@'+S.domain)){ $('#lerr').textContent = 'Solo pueden entrar cuentas @'+S.domain+'. Las personas externas no pueden crear solicitudes.'; return; }
     const u = S.users.find(x=>x.email===email);
     if(!u){ $('#lerr').textContent = 'Esa cuenta no está registrada en la demo. Usa una de las cuentas de demostración.'; return; }
-    S.session = u.id; save(); go('home');
+    S.session = u.id; save(); intro(()=>go('home'));
   }
 });
 render();

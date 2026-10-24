@@ -169,6 +169,7 @@ function sendMail_(p, r, to, subject, html, folder, saved, attachFinal) {
     <p style="font-size:15px;line-height:1.55">Hola, ${esc_(first_(to.name))}:</p>
     <p style="font-size:15px;line-height:1.55">${html}</p>
     ${saved && saved.length ? '<p style="font-size:14px">' + saved.map(s => '<a href="' + s.url + '">' + esc_(s.name) + '</a>').join(' &middot; ') + '</p>' : ''}
+    ${r.history ? '<details style="margin:14px 0"><summary style="font-size:13px;color:#56637A;cursor:pointer">Historial de la solicitud</summary><pre style="white-space:pre-wrap;font-family:inherit;font-size:12.5px;color:#56637A;line-height:1.5;margin:8px 0 0">' + esc_(r.history) + '</pre></details>' : ''}
     <p style="margin:22px 0"><a href="${folder.getUrl()}" style="background:#093169;color:#fff;text-decoration:none;padding:12px 18px;border-radius:10px;font-size:14px">Abrir carpeta en Drive</a></p>
     <p style="font-size:12.5px;color:#8E9AB0;line-height:1.5">Los ajustes se piden desde la plataforma, no respondiendo este correo. Este mensaje y la carpeta de Drive son el respaldo de la solicitud.</p>
   </div>`;
