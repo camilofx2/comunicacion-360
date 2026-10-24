@@ -647,6 +647,9 @@ const IKEY = 'c360-integ';
 let INTEG = {url:'',gestor:'',on:false};
 try{ INTEG = {...INTEG, ...(JSON.parse(localStorage.getItem(IKEY)||'{}'))}; }catch(e){}
 function saveInteg(){ try{ localStorage.setItem(IKEY, JSON.stringify(INTEG)); }catch(e){} }
+// Enlace de activación: index.html#cfg=<base64 de {url,gestor,on}> configura este navegador y limpia la URL.
+try{ const m = location.hash.match(/^#cfg=(.+)$/); if(m){ const j = JSON.parse(decodeURIComponent(escape(atob(m[1])))); INTEG = {...INTEG, ...j, on: j.on!==false}; saveInteg(); history.replaceState(null,'',location.pathname+location.search); setTimeout(()=>toast('Integración con Google activada en este navegador'),600); } }catch(e){}
+function integLink(){ return location.origin+location.pathname+'#cfg='+btoa(unescape(encodeURIComponent(JSON.stringify({url:INTEG.url,gestor:INTEG.gestor,on:true})))); }
 // Envía un evento al Apps Script (ver integracion/Code.gs). Crea carpetas en Drive y correos reales.
 async function sync(action, r, extra){
   if(!INTEG.on || !INTEG.url) return;
@@ -1293,7 +1296,7 @@ function cfgView(){
     <div class="card" style="border-color:var(--teal-soft)"><h3>Integración con Google (Drive + Gmail)</h3><p class="muted" style="font-size:14px;margin-top:-6px">Pega la URL del Apps Script desplegado (ver <code>integracion/README.md</code>). Con esto cada solicitud crea su carpeta en Drive y envía correos reales desde la cuenta que desplegó el script.</p>
       <div class="field"><label>URL del web app</label><input class="in" data-integ="url" value="${h(INTEG.url)}" placeholder="https://script.google.com/macros/s/…/exec"></div>
       <div class="field"><label>Correo del gestor (recibe copia de todo)</label><input class="in" data-integ="gestor" value="${h(INTEG.gestor)}" placeholder="comunicaciones@empresa.co"></div>
-      <div class="field" style="flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap"><label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" data-integ="on" ${INTEG.on?'checked':''}> Activar integración real</label><button class="btn sm" data-a="pingInteg">Probar conexión</button><span id="pingOut" class="faint" style="font-size:13px"></span></div></div>
+      <div class="field" style="flex-direction:row;align-items:center;gap:12px;flex-wrap:wrap"><label style="display:flex;gap:10px;align-items:center;cursor:pointer"><input type="checkbox" data-integ="on" ${INTEG.on?'checked':''}> Activar integración real</label><button class="btn sm" data-a="pingInteg">Probar conexión</button><button class="btn sm" data-a="copyInteg">${ic('copy',14)} Copiar enlace de activación</button><span id="pingOut" class="faint" style="font-size:13px"></span></div><p class="faint" style="font-size:12.5px;margin-top:8px">El enlace de activación configura la integración en cualquier otro navegador o celular al abrirlo. Compártelo solo con el equipo: contiene la URL del script.</p></div>
     <p class="faint" style="font-size:13px;margin-top:16px">Los cambios se guardan al salir de cada campo y aplican a las solicitudes nuevas.</p>`;
 }
 
@@ -1332,6 +1335,7 @@ const ACT = {
   pickProp:()=>{ V.pickFor='prop'; $('#fileIn').click(); },
   pinRm:t=>{ V.pins.splice(+t.dataset.i,1); render(); },
   exportCsv:()=>{ const rows=[['id','titulo','tipo','area','solicitante','disenador','estado','creada','requerida','entregada','rondas','prioridad']]; S.reqs.forEach(r=>rows.push([r.id,r.title,TY(r.type).label,r.area,U(r.requester).name,r.assignee?U(r.assignee).name:'',ST[r.status].l,iso(r.created),r.due,r.delivered?iso(r.delivered):'',r.rounds,r.priority?r.priority.status:''])); const csv=rows.map(x=>x.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n'); const a=document.createElement('a'); a.href='data:text/csv;charset=utf-8,\uFEFF'+encodeURIComponent(csv); a.download='comunicacion360_balance.csv'; a.click(); },
+  copyInteg:()=>{ if(!INTEG.url){ toast('Falta la URL'); return; } try{ navigator.clipboard.writeText(integLink()).then(()=>toast('Enlace copiado'),()=>prompt('Copia el enlace:',integLink())); }catch(e){ prompt('Copia el enlace:',integLink()); } },
   pingInteg:async()=>{ const o=$('#pingOut'); if(!INTEG.url){ o.textContent='Falta la URL'; return; } o.textContent='Probando…'; try{ const r=await fetch(INTEG.url+(INTEG.url.includes('?')?'&':'?')+'ping=1'); const j=await r.json(); o.textContent='OK · '+(j.account||'conectado')+(j.root?' · carpeta: '+j.root:''); }catch(e){ o.textContent='Sin respuesta: '+e.message; } },
   wType:t=>{ W.d.type=t.dataset.v; render(); },
   wFmt:t=>{ const v=t.dataset.v, a=W.d.formats; a.includes(v)?a.splice(a.indexOf(v),1):a.push(v); render(); },
