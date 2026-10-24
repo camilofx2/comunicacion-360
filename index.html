@@ -280,8 +280,28 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 @keyframes tin{from{opacity:0;transform:translateY(10px)}}
 /* ---------- login ---------- */
 .login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(70% 50% at 10% 0%,#D9E7FA 0,transparent 60%),radial-gradient(60% 45% at 95% 100%,#E7E4F7 0,transparent 60%),var(--bg)}
+.lcard{grid-template-columns:1.15fr 1fr}
 .lcard{width:min(1040px,100%);display:grid;grid-template-columns:1.1fr 1fr;background:var(--frame);border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
-.lvis{background:radial-gradient(60% 40% at 20% 20%,#DCE9FB 0,transparent 70%),radial-gradient(50% 35% at 85% 70%,#E6E3F8 0,transparent 70%),var(--side);padding:40px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line)}
+.lvis{position:relative;overflow:hidden;isolation:isolate;padding:36px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line);
+  background:
+    radial-gradient(55% 45% at 15% 18%,#CFE0FA 0,rgba(207,224,250,0) 70%),
+    radial-gradient(45% 40% at 88% 30%,#E3DEF9 0,rgba(227,222,249,0) 70%),
+    radial-gradient(60% 45% at 50% 100%,#DCE8FB 0,rgba(220,232,251,0) 70%),
+    linear-gradient(180deg,#F8FAFD,#F1F5FB)}
+.lvis::before{content:'';position:absolute;inset:-40%;background:
+    radial-gradient(40% 30% at 30% 40%,rgba(20,108,232,.18),transparent 70%),
+    radial-gradient(35% 28% at 70% 65%,rgba(100,87,196,.16),transparent 70%);
+  filter:blur(40px);animation:drift 18s ease-in-out infinite alternate;z-index:-2}
+.lvis::after{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.19 0 0 0 0 0.41 0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(4%,6%) rotate(6deg)}}
+.lvis-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.orgtag{font-size:12.5px;font-weight:500;color:var(--navy);background:rgba(255,255,255,.7);border:1px solid rgba(9,49,105,.12);padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px)}
+.lvis-brand{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:10px 0}
+.bigmark{color:var(--accent);filter:drop-shadow(0 10px 24px rgba(20,108,232,.18))}
+.bigname{font-size:44px;letter-spacing:-.035em;font-weight:500;color:var(--navy);line-height:1}
+.bigorg{font-size:17px;color:var(--brand);font-weight:500;letter-spacing:-.01em;padding-left:2px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lvis{background:radial-gradient(55% 45% at 15% 18%,#15284A 0,transparent 70%),radial-gradient(45% 40% at 88% 30%,#25223F 0,transparent 70%),var(--side)} :root:not([data-theme="light"]) .orgtag{background:rgba(255,255,255,.08);color:var(--navy)}}
 .lvis .stack{position:relative;height:300px}
 .lvis .stack svg{position:absolute;width:62%}
 .lform{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;min-width:0}
@@ -318,7 +338,12 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
   .split{grid-template-columns:1fr}
   .login{padding:12px}
   .lcard{grid-template-columns:minmax(0,1fr);border-radius:24px}
-  .lvis{display:none}
+  .lvis{padding:26px 20px 22px;border-right:0;border-bottom:1px solid var(--line);gap:14px}
+  .lvis-brand{gap:8px}
+  .bigmark svg{width:64px;height:64px}
+  .bigname{font-size:28px}
+  .bigorg{font-size:14px}
+  .lvis>p.muted{display:none}
   .lform{padding:28px 18px;min-width:0}
   .lform h1{font-size:27px}
   .demo button{padding:9px 10px}
@@ -690,17 +715,15 @@ function loginView(){
   const users = S.users.slice().sort((a,b)=>roles.indexOf(a.role)-roles.indexOf(b.role));
   return `<div class="login"><div class="lcard">
     <div class="lvis">
-      <div>${lockup(24)}<div class="faint" style="font-size:13px;margin-top:8px">${h(S.org)}</div></div>
-      <div class="stack">
-        <div style="position:absolute;left:0;top:70px;width:58%">${folderArt('silver','Archivo')}</div>
-        <div style="position:absolute;right:0;top:0;width:58%">${folderArt('coral','v3')}</div>
-        <div style="position:absolute;left:20%;top:120px;width:62%">${folderArt('teal','En curso',designers())}</div>
+      <div class="lvis-top"><span class="orgtag">${h(S.short)} · ${S.preset==='elc'?'Google Workspace':'Microsoft 365'}</span><span class="faint" style="font-size:12.5px">Prototipo · v4</span></div>
+      <div class="lvis-brand">
+        <div class="bigmark">${mark(120)}</div>
+        <h2 class="bigname">Comunicación 360</h2>
+        <p class="bigorg">${h(S.org)}</p>
       </div>
-      <div><p class="muted" style="font-size:15px;max-width:380px">Solicitar, priorizar, diseñar, aprobar, entregar y archivar. Un solo registro de principio a fin.</p>
-      <p class="faint" style="font-size:12.5px;margin-top:10px">Correo corporativo: ${h(S.suite)}</p></div>
+      <p class="muted" style="font-size:14.5px;max-width:380px">Solicitar, priorizar, diseñar, aprobar, entregar y archivar. Un solo registro de principio a fin.</p>
     </div>
     <div class="lform">
-      <div class="lockup" style="margin-bottom:18px">${mark(26)}<span style="font-size:15px">Comunicación 360</span></div>
       <h1>Entra con tu cuenta corporativa</h1>
       <p class="muted" style="margin-top:10px">Solo cuentas <b>@${h(S.domain)}</b> pueden crear solicitudes. En producción este paso lo hace el inicio de sesión de ${S.preset==='elc'?'Google':'Microsoft'}; aquí se simula.</p>
       <form data-form="login" style="margin-top:22px">
