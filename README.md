@@ -25,3 +25,11 @@ Identidad: ver `../01_IDENTIDAD`. Paleta Navy #093169 · Azul #0F50AC · Señal 
 
 ### Limitación conocida del piloto
 Las solicitudes viven en el navegador de cada persona (`localStorage`). Para que solicitante, supervisor y diseñadores vean lo mismo desde equipos distintos hace falta un almacenamiento compartido; el plan es una hoja de Google Sheets administrada por el mismo Apps Script (`db_load` / `db_save`), sin costo.
+
+## v8 · piloto EPC en local
+
+- **Cómo abrirla:** doble clic en `index.html`. Es un solo archivo: fuentes, logos, ilustración animada y su reproductor van dentro. No necesita internet ni servidor (solo la integración con Google usa internet).
+- **Solo EPC.** Se quitaron la empresa demo y el selector de empresas. ELC se arma después a partir de esta base.
+- **Archivos en calidad original:** hasta 20 MB por archivo y 30 MB por solicitud, guardados sin compresión en el navegador (IndexedDB); en pantalla se usan miniaturas y el visor carga el original.
+- **Datos por navegador:** cada navegador y cada computador tiene su propia copia. Para que todo el equipo vea lo mismo hace falta la base compartida (siguiente paso).
+- Línea de tiempo interactiva, buscador en vivo (título, código, área, persona, texto), Balance con gráficas, modo claro/oscuro en el pie de la barra lateral.

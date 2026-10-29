@@ -17,6 +17,8 @@ Comunicación 360/
 
 El solicitante recibe acceso de lectura a su carpeta. Los correos llevan el enlace; el archivo final va adjunto solo si pesa menos de 10 MB.
 
+**v8 · archivos en calidad original.** La plataforma sube cada archivo (adjuntos, logos, versiones y final) con la acción `archivo`, uno por petición y sin compresión, hasta 20 MB por archivo. Si el script desplegado es anterior a v8, la plataforma usa el envío antiguo: miniaturas para adjuntos y versiones, y el archivo final completo.
+
 ## Desplegar (5 minutos, una sola vez)
 
 1. Entra a <https://script.google.com> con la cuenta remitente y crea un proyecto nuevo.
@@ -29,6 +31,8 @@ El solicitante recibe acceso de lectura a su carpeta. Los correos llevan el enla
 6. En la plataforma entra con un perfil **dev** → **Configuración → Integración con Google**, pega la URL, escribe el correo del gestor, activa la casilla y pulsa **Probar conexión**.
 
 Cada vez que cambies `Code.gs`: **Implementar → Administrar implementaciones → editar → Nueva versión**. La URL no cambia.
+
+> Para v8 hay que hacer este paso una vez: pegar el `Code.gs` nuevo y publicar una versión nueva.
 
 ## Límites de la cuenta gratuita de Google
 

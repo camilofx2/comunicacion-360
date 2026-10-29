@@ -60,18 +60,33 @@ function doPost(e) {
       message = 'Solicitante notificado';
     }
 
+    // v8: un archivo por petición, en su calidad original (hasta 20 MB). La plataforma
+    // los sube uno a uno antes de la entrega para no pasar el límite de tamaño por envío.
+    if (p.action === 'archivo') {
+      const folder = requestFolder_(r);
+      let dest = folder;
+      String(p.sub || '').split('/').filter(String).forEach(function (n) { dest = getOrCreateFolder_(dest, n); });
+      const saved = saveDataUrl_(dest, p.file || {});
+      return json_({ ok: true, message: 'Archivo guardado', folderUrl: folder.getUrl(), file: saved });
+    }
+
     if (p.action === 'entrega') {
       const folder = requestFolder_(r);
       folderUrl = folder.getUrl();
       saveText_(folder, 'brief.txt', brief_(r, p.org));
       saveText_(folder, 'historial.txt', r.history || '');
       const adj = getOrCreateFolder_(folder, '01_adjuntos');
-      (p.attachments || []).forEach(function (f) { files.push(saveDataUrl_(adj, f)); });
       const prop = getOrCreateFolder_(folder, '02_propuestas');
-      (p.proposals || []).forEach(function (f) { files.push(saveDataUrl_(prop, f)); });
-      if (p.adjustmentsText) saveText_(prop, 'ajustes.txt', p.adjustmentsText);
       const ent = getOrCreateFolder_(folder, '03_entrega');
-      const finals = (p.files || []).map(function (f) { return saveDataUrl_(ent, f); });
+      let finals;
+      if (p.uploaded) {
+        finals = (p.finalIds || []).map(function (id) { const f = DriveApp.getFileById(id); return { name: f.getName(), url: f.getUrl(), id: id, size: f.getSize() }; });
+      } else {
+        (p.attachments || []).forEach(function (f) { files.push(saveDataUrl_(adj, f)); });
+        (p.proposals || []).forEach(function (f) { files.push(saveDataUrl_(prop, f)); });
+        finals = (p.files || []).map(function (f) { return saveDataUrl_(ent, f); });
+      }
+      if (p.adjustmentsText) saveText_(prop, 'ajustes.txt', p.adjustmentsText);
       files.push.apply(files, finals);
       if (r.requester && r.requester.email) { try { folder.addViewer(r.requester.email); } catch (err) {} }
 
