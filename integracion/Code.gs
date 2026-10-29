@@ -19,6 +19,109 @@
 
 const ROOT_NAME = 'Comunicación 360';
 const ATTACH_LIMIT = 10 * 1024 * 1024; // 10 MB: por encima, solo enlace
+const DOMINIO = 'epc.com.co';           // solo estas cuentas pueden registrarse
+const APP_URL = 'https://camilofx2.github.io/comunicacion-360/';
+
+/* ===================== v9 · Cuentas propias de la plataforma =====================
+   1. La persona escribe su correo @epc.com.co → le llega un código de 6 dígitos (10 min).
+   2. Con el código crea una contraseña SOLO para Comunicación 360 (no es la del correo).
+   3. La contraseña se guarda con sal y hash (SHA-256 iterado); nadie puede leerla.
+   4. Al entrar recibe un token de sesión (30 días). Todo lo demás exige ese token.     */
+const PROPS = PropertiesService.getScriptProperties();
+const SES_DIAS = 30;
+function norm_(e) { return String(e || '').trim().toLowerCase(); }
+function hash_(pass, salt) {
+  let d = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, salt + '|' + pass, Utilities.Charset.UTF_8);
+  for (let i = 0; i < 1500; i++) d = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, d.concat(Utilities.newBlob(salt).getBytes()));
+  return Utilities.base64Encode(d);
+}
+function rand_(n) { let s = ''; while (s.length < n) s += Utilities.getUuid().replace(/-/g, ''); return s.slice(0, n); }
+function cuenta_(email) { const v = PROPS.getProperty('acct:' + email); return v ? JSON.parse(v) : null; }
+function sesion_(token) {
+  if (!token) return null;
+  const v = PROPS.getProperty('ses:' + token); if (!v) return null;
+  const s = JSON.parse(v); if (s.exp < Date.now()) { PROPS.deleteProperty('ses:' + token); return null; }
+  return s;
+}
+function nuevaSesion_(email, name) { const t = rand_(48); PROPS.setProperty('ses:' + t, JSON.stringify({ email: email, name: name, exp: Date.now() + SES_DIAS * 864e5 })); return t; }
+function limite_(clave, max, seg) { const c = CacheService.getScriptCache(); const n = +(c.get(clave) || 0); if (n >= max) return false; c.put(clave, String(n + 1), seg); return true; }
+function auth_(p) {
+  const email = norm_(p.email);
+  if (p.action === 'auth_code') {
+    if (!/^[^@\s]+@[^@\s]+$/.test(email) || email.split('@')[1] !== DOMINIO) return { ok: false, message: 'Solo pueden entrar correos @' + DOMINIO + '.' };
+    if (!limite_('c:' + email, 5, 3600)) return { ok: false, message: 'Pediste muchos códigos. Espera una hora e inténtalo de nuevo.' };
+    const code = String(Math.floor(100000 + Math.random() * 900000));
+    CacheService.getScriptCache().put('code:' + email, JSON.stringify({ code: code, n: 0 }), 600);
+    GmailApp.sendEmail(email, 'Tu código para Comunicación 360: ' + code, 'Tu código es ' + code + '. Vence en 10 minutos.', {
+      name: 'Comunicación 360',
+      htmlBody: '<div style="font-family:Helvetica,Arial,sans-serif;max-width:480px;margin:0 auto;color:#0B1A33"><p style="font-size:16px;color:#093169">Comunicaci&oacute;n <b>360</b></p>' +
+        '<p style="font-size:15px">Este es tu código para crear o cambiar tu contraseña de la plataforma:</p>' +
+        '<p style="font-size:34px;letter-spacing:8px;font-weight:600;color:#093169;margin:18px 0">' + code + '</p>' +
+        '<p style="font-size:13px;color:#56637A">Vence en 10 minutos. Si no lo pediste, ignora este correo. La contraseña que crees es solo para Comunicación 360, no es la de tu correo.</p></div>'
+    });
+    return { ok: true, message: 'Te enviamos un código a ' + email, exists: !!cuenta_(email) };
+  }
+  if (p.action === 'auth_set') {
+    const c = CacheService.getScriptCache(), raw = c.get('code:' + email);
+    if (!raw) return { ok: false, message: 'El código venció. Pide uno nuevo.' };
+    const k = JSON.parse(raw);
+    if (k.n >= 5) { c.remove('code:' + email); return { ok: false, message: 'Demasiados intentos. Pide un código nuevo.' }; }
+    if (String(p.code || '').trim() !== k.code) { k.n++; c.put('code:' + email, JSON.stringify(k), 600); return { ok: false, message: 'El código no coincide.' }; }
+    if (String(p.password || '').length < 8) return { ok: false, message: 'La contraseña debe tener al menos 8 caracteres.' };
+    c.remove('code:' + email);
+    const prev = cuenta_(email), salt = rand_(24), name = String(p.name || (prev && prev.name) || email.split('@')[0]).trim().slice(0, 80);
+    PROPS.setProperty('acct:' + email, JSON.stringify({ salt: salt, hash: hash_(p.password, salt), name: name, t: Date.now() }));
+    return { ok: true, token: nuevaSesion_(email, name), email: email, name: name };
+  }
+  if (p.action === 'auth_login') {
+    if (!limite_('l:' + email, 10, 900)) return { ok: false, message: 'Demasiados intentos. Espera 15 minutos.' };
+    const a = cuenta_(email);
+    if (!a || hash_(String(p.password || ''), a.salt) !== a.hash) return { ok: false, message: 'Correo o contraseña incorrectos. Si es tu primera vez, pide un código.' };
+    return { ok: true, token: nuevaSesion_(email, a.name), email: email, name: a.name };
+  }
+  if (p.action === 'auth_logout') { if (p.token) PROPS.deleteProperty('ses:' + p.token); return { ok: true }; }
+  return null;
+}
+
+/* ===================== v9 · Datos compartidos =====================
+   El estado de la plataforma vive en un archivo JSON en Drive. Cada guardado se fusiona
+   por solicitud (gana el cambio más reciente), así dos personas pueden trabajar a la vez. */
+function datosFile_() {
+  const root = getOrCreateFolder_(DriveApp.getRootFolder(), ROOT_NAME), sys = getOrCreateFolder_(root, '_sistema');
+  const it = sys.getFilesByName('datos.json'); return it.hasNext() ? it.next() : sys.createFile('datos.json', '{}', 'application/json');
+}
+function fusion_(a, b) {
+  if (!a || !a.reqs) return b; if (!b || !b.reqs) return a;
+  const byId = function (list, key) { const m = {}; (list || []).forEach(function (x) { m[x[key || 'id']] = x; }); return m; };
+  const ra = byId(a.reqs), rb = byId(b.reqs);
+  Object.keys(rb).forEach(function (id) { if (!ra[id] || (rb[id].updatedAt || 0) >= (ra[id].updatedAt || 0)) ra[id] = rb[id]; });
+  const ua = byId(a.users); (b.users || []).forEach(function (u) { ua[u.id] = u; });
+  const ma = byId(a.mails); (b.mails || []).forEach(function (m) { ma[m.id] = m; });
+  const out = JSON.parse(JSON.stringify(b));
+  out.reqs = Object.keys(ra).map(function (k) { return ra[k]; });
+  out.users = Object.keys(ua).map(function (k) { return ua[k]; });
+  out.mails = Object.keys(ma).map(function (k) { return ma[k]; }).sort(function (x, y) { return y.at - x.at; }).slice(0, 500);
+  out.seq = Math.max(a.seq || 1, b.seq || 1);
+  return out;
+}
+function datos_(p) {
+  if (p.action === 'datos_leer') { const f = datosFile_(); return { ok: true, state: JSON.parse(f.getBlob().getDataAsString() || '{}') }; }
+  if (p.action === 'datos_guardar') {
+    const lock = LockService.getScriptLock(); lock.waitLock(20000);
+    try { const f = datosFile_(); const cur = JSON.parse(f.getBlob().getDataAsString() || '{}'); const st = fusion_(cur, p.state); delete st.session; st.savedAt = Date.now(); f.setContent(JSON.stringify(st)); return { ok: true, state: st }; }
+    finally { lock.releaseLock(); }
+  }
+  if (p.action === 'nuevo_id') {
+    const lock = LockService.getScriptLock(); lock.waitLock(20000);
+    try { const n = Math.max(+(PROPS.getProperty('seq') || 0), +(p.min || 0)) + 1; PROPS.setProperty('seq', String(n)); return { ok: true, id: 'C360-' + ('000' + n).slice(-4) }; }
+    finally { lock.releaseLock(); }
+  }
+  if (p.action === 'archivo_leer') {
+    const f = DriveApp.getFileById(p.id); const b = f.getBlob();
+    return { ok: true, name: f.getName(), mime: b.getContentType(), data: Utilities.base64Encode(b.getBytes()) };
+  }
+  return null;
+}
 
 function doGet(e) {
   const root = getOrCreateFolder_(DriveApp.getRootFolder(), ROOT_NAME);
@@ -28,6 +131,10 @@ function doGet(e) {
 function doPost(e) {
   try {
     const p = JSON.parse(e.postData.contents);
+    if (/^auth_/.test(p.action)) return json_(auth_(p) || { ok: false, message: 'Acción desconocida' });
+    const ses = sesion_(p.token);
+    if (!ses) return json_({ ok: false, auth: false, message: 'Tu sesión venció. Vuelve a entrar.' });
+    const d = datos_(p); if (d) return json_(d);
     const r = p.request;
     let message = 'Registrado', folderUrl = r.driveUrl || null, files = [];
 
@@ -88,7 +195,6 @@ function doPost(e) {
       }
       if (p.adjustmentsText) saveText_(prop, 'ajustes.txt', p.adjustmentsText);
       files.push.apply(files, finals);
-      if (r.requester && r.requester.email) { try { folder.addViewer(r.requester.email); } catch (err) {} }
 
       const resumen = [
         r.priority ? 'Prioridad: ' + (r.priority.status === 'aprobada' ? 'aprobada' : 'no aprobada') + ' — ' + esc_(r.priority.reason) : 'Sin prioridad',
@@ -96,7 +202,7 @@ function doPost(e) {
         'Solicitada: ' + fecha_(r.created) + ' · Entregada: ' + fecha_(r.delivered || Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd'))
       ].join('<br>');
       sendMail_(p, r, r.requester, 'Entrega final: ' + r.title,
-        'Tu pieza <b>' + esc_(r.title) + '</b> está lista. Todo el material (brief, versiones y archivo final) está en tu carpeta de Drive.' +
+        'Tu pieza <b>' + esc_(r.title) + '</b> está lista. El archivo final va adjunto (si pesa menos de 10 MB) y también puedes descargarlo en calidad original desde la plataforma.' +
         '<br><br><b>Resumen</b><br>' + resumen +
         '<br><br>Para cualquier novedad o ajuste cita el código <b>' + esc_(r.id) + '</b> en la plataforma.',
         folder, true, finals);
@@ -161,7 +267,7 @@ function sendMail_(p, r, to, subject, html, folder, withHistory, finals) {
     '<p style="font-size:15px;line-height:1.55">Hola, ' + esc_(first_(to.name)) + ':</p>' +
     '<p style="font-size:15px;line-height:1.55">' + html + '</p>' +
     (finals && finals.length ? '<p style="font-size:14px">Archivo final: ' + finals.map(function (s) { return '<a href="' + s.url + '">' + esc_(s.name) + '</a>'; }).join(' &middot; ') + '</p>' : '') +
-    (folder ? '<p style="margin:22px 0"><a href="' + folder.getUrl() + '" style="background:#093169;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-size:14px">Abrir carpeta en Drive</a></p>' : '') +
+    '<p style="margin:22px 0"><a href="' + APP_URL + '" style="background:#093169;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-size:14px">Abrir Comunicación 360</a></p>' +
     (withHistory && r.history ? '<p style="font-size:13px;color:#56637A;margin:18px 0 6px"><b>Historial de la solicitud</b></p><pre style="white-space:pre-wrap;font-family:inherit;font-size:12.5px;color:#56637A;line-height:1.55;margin:0;padding:12px 14px;background:#F2F5F9;border-radius:10px">' + esc_(r.history) + '</pre>' : '') +
     '<p style="font-size:12.5px;color:#8E9AB0;line-height:1.5;margin-top:22px">Las novedades y ajustes se gestionan en la plataforma citando el c&oacute;digo ' + esc_(r.id) + ', no respondiendo este correo.</p>' +
     '</div>';
