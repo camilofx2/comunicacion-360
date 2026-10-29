@@ -1,35 +1,40 @@
-# Comunicación 360 — prototipo
+# Comunicación 360 · Piloto EPC (v10)
 
-Plataforma interna para gestionar solicitudes de diseño: solicitar → priorizar → asignar → diseñar → aprobar → entregar → archivar.
+Plataforma interna para gestionar las solicitudes de diseño de la Dirección de Comunicaciones de la EPC (Empresas Públicas de Cundinamarca): **solicitar → priorizar → asignar → diseñar → aprobar → entregar → archivar**, con un solo canal y trazabilidad completa.
 
-- `index.html`: prototipo completo, autocontenido. Se abre con doble clic o se publica en cualquier hosting estático (GitHub Pages).
-- Datos ficticios guardados solo en el navegador (localStorage). Botón "Restablecer datos de la demo" en el menú de la empresa.
-- Dos empresas de ejemplo: ELC (Google Workspace) y EPC (Microsoft 365). Se cambian en el login.
-- Perfiles: solicitante, diseñador, supervisor. El perfil con etiqueta "dev" ve Configuración.
+**Abrir:** https://camilofx2.github.io/comunicacion-360/
 
-Identidad: ver `../01_IDENTIDAD`. Paleta Navy #093169 · Azul #0F50AC · Señal #146CE8 · Papel #F6F8FB. Tipografía Archivo (Google Fonts).
+## Cómo se entra
 
-## Identidad v1 (24 oct 2026)
-- Símbolo de cápsulas (`assets/simbolo.svg`), logotipo Kurdis (Regular + 360 SemiBold), interfaz en Grift.
-- Fuentes autoalojadas en `assets/fonts/` (solo los pesos usados). Verificar licencia web de Kurdis y Grift antes de un despliegue público definitivo.
-- Animación del lobby: `assets/lobby.gif`.
+1. Correo institucional **@epc.com.co**.
+2. La primera vez: «Primera vez… enviarme un código». Llega un código de 6 dígitos al correo (revisar también «Correo no deseado»).
+3. Con el código se crea una **contraseña solo para Comunicación 360** (no es la del correo), se escribe el nombre y se **elige el área** de una lista.
+4. El rol (solicitante, diseñador o supervisor) lo define la lista del equipo en Configuración → Equipo. Quien no está en la lista entra como solicitante.
 
-## Piloto (v7)
+## Qué hace
 
-- Un enlace por empresa: `?org=epc` (Empresas Públicas de Cundinamarca) y `?org=elc` (Empresa de Licores de Cundinamarca). Sin parámetro abre EPC.
-- Co-branding: logo de la empresa en el acceso y en la barra lateral; el símbolo y el nombre Comunicación 360 se mantienen.
-- Modo claro / oscuro con interruptor (se guarda por navegador).
-- Semáforo de etapas: Recibida azul · Asignada amarillo · En diseño naranja · En aprobación violeta · Entregada verde.
-- Asignación con sugerencia: el tablero propone al diseñador con menos carga (videógrafa para video y cubrimientos).
-- Derechos: ver `LICENSE`. © 2026 Juan Camilo Orozco Galindo.
+| Rol | Puede |
+|---|---|
+| Solicitante | Pedir una pieza en 5 pasos (qué, para qué, contenido, cuándo, revisar), adjuntar archivos en calidad original, aprobar la propuesta o marcar ajustes sobre la imagen (hasta 2 rondas) |
+| Supervisor | Ver el tablero (por asignar, en curso, prioridades, en riesgo, histórico), asignar con sugerencia por carga, aprobar prioridades, ver el Balance y el registro de correos |
+| Diseñador | Iniciar, enviar propuestas y entregar el archivo final |
 
-### Limitación conocida del piloto
-Las solicitudes viven en el navegador de cada persona (`localStorage`). Para que solicitante, supervisor y diseñadores vean lo mismo desde equipos distintos hace falta un almacenamiento compartido; el plan es una hoja de Google Sheets administrada por el mismo Apps Script (`db_load` / `db_save`), sin costo.
+Plazo estándar de 3 días hábiles (configurable por tipo de pieza). Lo que se pide antes es prioridad y requiere aprobación del supervisor.
 
-## v8 · piloto EPC en local
+## Estado
 
-- **Cómo abrirla:** doble clic en `index.html`. Es un solo archivo: fuentes, logos, ilustración animada y su reproductor van dentro. No necesita internet ni servidor (solo la integración con Google usa internet).
-- **Solo EPC.** Se quitaron la empresa demo y el selector de empresas. ELC se arma después a partir de esta base.
-- **Archivos en calidad original:** hasta 20 MB por archivo y 30 MB por solicitud, guardados sin compresión en el navegador (IndexedDB); en pantalla se usan miniaturas y el visor carga el original.
-- **Datos por navegador:** cada navegador y cada computador tiene su propia copia. Para que todo el equipo vea lo mismo hace falta la base compartida (siguiente paso).
-- Línea de tiempo interactiva, buscador en vivo (título, código, área, persona, texto), Balance con gráficas, modo claro/oscuro en el pie de la barra lateral.
+**Piloto en uso real con el equipo de Comunicaciones.** Los datos y archivos se guardan **temporalmente** en el Drive personal del autor mientras se define con Sistemas una base de datos interna. Ver [`docs/SISTEMAS.md`](docs/SISTEMAS.md).
+
+## Archivos
+
+| Archivo | Qué es |
+|---|---|
+| `index.html` | La aplicación completa en un solo archivo (HTML, CSS y JS sin framework; fuentes, logos e ilustración incluidos) |
+| `integracion/Code.gs` | Servicio en Google Apps Script: cuentas, datos compartidos, archivos en Drive y correos |
+| `docs/SISTEMAS.md` | Nota técnica para el equipo de Sistemas de la EPC |
+| `docs/MAESTRO.md` | Documento maestro del proyecto (estado, decisiones, pendientes) |
+| `LICENSE` | Derechos y licencia de uso |
+
+## Derechos
+
+Obra original de **Juan Camilo Orozco Galindo**, hecha por iniciativa propia. La EPC recibe una licencia de uso no exclusiva, temporal y revocable para el piloto. Ver [`LICENSE`](LICENSE). © 2026.
