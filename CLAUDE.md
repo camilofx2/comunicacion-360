@@ -7,6 +7,7 @@ Lee primero **`docs/MAESTRO.md`**: es el contexto completo (qué es, estado, arq
 - En textos de comunicación, diferencia el **copy del post** del **texto que va dentro de la pieza**.
 - `index.html` es **un solo archivo autocontenido** (HTML, CSS y JS sin framework; fuentes, logos, Lottie y MSAL van dentro). No agregues dependencias externas en tiempo de ejecución.
 - El backend es **Google Apps Script** (`integracion/Code.gs`), desplegado desde la cuenta camiloorozcofx@gmail.com. Cada cambio en `Code.gs` exige que Juan Camilo publique una **Nueva versión** de la implementación (la URL no cambia).
+- No subas al repositorio público la dirección del Apps Script mientras el script desplegado no exija sesión.
 - **No publiques en `main`** (GitHub Pages) cambios que dependan de un Apps Script que todavía no esté desplegado.
 - Nunca escribas contraseñas: Juan Camilo inicia sus sesiones él mismo.
 - Prohibido el **morado** como color de estado. Usa la paleta y el semáforo de `docs/MAESTRO.md` §8.
@@ -21,5 +22,5 @@ node -e "const s=require('fs').readFileSync('index.html','utf8');const m=[...s.m
 
 ## Ramas
 - `main` → publicada en https://camilofx2.github.io/comunicacion-360/ (v9)
-- `v10-cuentas` → cuentas propias con código al correo. Está pendiente de publicar el Apps Script v10 y luego fusionarla en `main`.
+- **v10 (cuentas propias)** no está en GitHub: está en `~/Documents/PLATAFORMA 360 COMUNICACION/03_PLATAFORMA/v10_cuentas/` (`index.html` + `Code.gs`). Se sube cuando el Apps Script v10 esté desplegado, idealmente con el repositorio ya privado.
 - `demo-lunes` → foto de la demo inicial
