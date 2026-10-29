@@ -758,9 +758,22 @@ const DEFAULTS = {
 };
 // Roles: solicitante · disenador · supervisor · director.  designs=true recibe piezas. dev=true ve Configuración.
 const PRUEBA = 'juan.orozco@epc.com.co';
-// Áreas que se eligen al crear la cuenta. PROVISIONAL: reemplazar por la lista oficial de la EPC.
+// Direcciones oficiales de la EPC (formulario «Dirección a la que pertenece», 29 oct 2026).
 // También se editan en Configuración → Áreas (esa lista se comparte con todo el equipo y tiene prioridad).
-const AREAS_EPC = ['Gerencia General','Secretaría General','Dirección de Comunicaciones','Talento Humano','Oficina Jurídica','Dirección Financiera','Planeación','Control Interno','Tecnología (Sistemas)','Otra área'];
+const AREAS_EPC = [
+  'Dirección de Control Interno',
+  'Dirección de Estructuración de Proyectos',
+  'Dirección de Finanzas, Presupuesto, Contabilidad y Tesorería',
+  'Dirección de Gestión Contractual',
+  'Dirección de Gestión Humana, Administrativa y Servicio al Cliente',
+  'Dirección de Obras',
+  'Dirección de Planeación',
+  'Dirección Jurídica',
+  'Dirección Operativa, Aseguramiento de la Prestación y Proyectos Especiales',
+  'Gerencia General',
+  'Subgerencia General',
+  'Subgerencia Técnica y Operativa'
+];
 const areasLista = () => (S && S.cfg && Array.isArray(S.cfg.areas) && S.cfg.areas.length) ? S.cfg.areas : AREAS_EPC;
 const nombreDeCorreo = e => String(e||'').split('@')[0].split(/[._-]+/).filter(Boolean).map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
 const pl = (n, uno, varios) => n + ' ' + (n === 1 ? uno : (varios || uno + 's'));
@@ -1411,7 +1424,7 @@ function authForm(){
       <p class="muted" style="margin-top:10px">Te enviamos un código de 6 dígitos a <b>${h(a.email)}</b>. Revisa también «Correo no deseado». La contraseña que crees es <b>solo para Comunicación 360</b>, no es la de tu correo.</p>
       <form data-form="authset" style="margin-top:16px">
         <div class="field" style="margin-top:0"><label for="acode">Código</label><input class="in" id="acode" name="code" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="123456" autocomplete="one-time-code" value="${h(a.code||'')}" required style="letter-spacing:6px;font-size:20px"><span class="hint">Llega en menos de un minuto y vence en 10.</span></div>
-        ${a.exists?'':`<div class="field"><label for="aname">Tu nombre</label><input class="in" id="aname" name="name" placeholder="Nombre y apellido" value="${h(a.name!=null?a.name:nombreDeCorreo(a.email))}" autocomplete="name" required><span class="hint">Así aparecerás en las solicitudes y en los correos. Corrígelo si hace falta.</span></div><div class="field"><label for="aarea">Tu área</label><select class="in sel" id="aarea" name="area" required><option value="" disabled ${a.area?'':'selected'}>Elige tu área…</option>${areasLista().map(x=>`<option ${a.area===x?'selected':''}>${h(x)}</option>`).join('')}</select><span class="hint">¿No aparece tu área? Avísale a la Dirección de Comunicaciones.</span></div>`}
+        ${a.exists?'':`<div class="field"><label for="aname">Tu nombre</label><input class="in" id="aname" name="name" placeholder="Nombre y apellido" value="${h(a.name!=null?a.name:nombreDeCorreo(a.email))}" autocomplete="name" required><span class="hint">Así aparecerás en las solicitudes y en los correos. Corrígelo si hace falta.</span></div><div class="field"><label for="aarea">Dirección a la que perteneces</label><select class="in sel" id="aarea" name="area" required><option value="" disabled ${a.area?'':'selected'}>Elige tu dirección…</option>${areasLista().map(x=>`<option ${a.area===x?'selected':''}>${h(x)}</option>`).join('')}</select><span class="hint">Si tu dependencia no aparece, elige la dirección de la que depende.</span></div>`}
         <div class="field"><label for="apass">Nueva contraseña</label><div class="pwd"><input class="in" id="apass" name="password" type="password" minlength="8" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required><button type="button" class="pwdbtn" data-a="pwdver" aria-label="Mostrar contraseña">${ic('eye',18)}</button></div><span class="hint" id="apassHint">Mínimo 8 caracteres. Es solo para Comunicación 360, no la de tu correo.</span></div>
         <div class="field"><label for="apass2">Repítela</label><input class="in" id="apass2" name="password2" type="password" minlength="8" autocomplete="new-password" required><span class="hint" id="apass2Hint">&nbsp;</span></div>
         ${msg}
@@ -2271,7 +2284,7 @@ document.addEventListener('submit', async e => {
   if(fm==='authset'){
     e.preventDefault(); V.auth.ok = false; const f = e.target;
     if(f.name){ V.auth.name = f.name.value; if(f.name.value.trim().split(/\s+/).length < 2){ V.auth.msg = 'Escribe tu nombre y apellido.'; render(); return; } }
-    if(f.area){ V.auth.area = f.area.value.trim(); if(!V.auth.area){ V.auth.msg = 'Elige tu área.'; render(); return; } }
+    if(f.area){ V.auth.area = f.area.value.trim(); if(!V.auth.area){ V.auth.msg = 'Elige la dirección a la que perteneces.'; render(); return; } }
     if(f.password.value !== f.password2.value){ V.auth.msg = 'Las contraseñas no coinciden.'; render(); return; }
     const j = await authCall({action:'auth_set', email:V.auth.email, code:f.code.value.trim(), password:f.password.value, name:f.name?f.name.value.trim():''}); if(!j) return;
     if(!j.ok){ V.auth.msg = j.message; render(); return; }
