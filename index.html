@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es" data-theme="light">
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,23 +17,30 @@
   --line:#E4E9F1;--line2:#D3DBE7;--card:#F2F5F9;--chip:#E9EEF5;
   --navy:#093169;--brand:#0F50AC;--accent:#146CE8;
   --teal:#146CE8;--teal-soft:#E3EDFC;--violet:#6457C4;--violet-soft:#ECEAFB;--coral:#093169;--coral-soft:#E4EAF4;
-  --amber:#A86F0C;--amber-soft:#FBF1DC;--green:#1E7A4F;--green-soft:#E1F2E9;--red:#C2392C;--red-soft:#FBE5E2;
+  --amber:#B5800A;--amber-soft:#FBF1DC;--orange:#C2561A;--orange-soft:#FBE8DC;--green:#1E7A4F;--green-soft:#E1F2E9;--red:#C2392C;--red-soft:#FBE5E2;
   --blue:#0F50AC;--blue-soft:#E3EDFC;--flag:#D9602F;--flag-soft:#FDEBE3;
   --shadow:0 1px 2px rgba(9,49,105,.05),0 18px 48px rgba(9,49,105,.08);
   color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0C0C0D;--frame:#151516;--side:#111112;--ink:#F2F2EF;--ink2:#A8A8A3;--ink3:#6F6F6B;
-  --line:#26262A;--line2:#34343A;--card:#1C1C1E;--chip:#232326;
-  --teal:#7CC7BF;--teal-soft:#16302D;--violet:#AEA6F5;--violet-soft:#25223F;--coral:#FF9B73;--coral-soft:#3A2017;
-  --amber:#F1C062;--amber-soft:#35290F;--green:#7DD3A3;--green-soft:#123222;--red:#FF8A7E;--red-soft:#3B1714;
-  --blue:#93B6F0;--navy:#C9D8F5;--brand:#8FB4F2;--accent:#6EA5F5;--flag:#FF9B73;--flag-soft:#3A2017;--teal:#6EA5F5;--teal-soft:#15284A;--coral:#C9D8F5;--coral-soft:#1C2A44;--blue-soft:#172640;--shadow:0 1px 2px rgba(0,0,0,.3),0 18px 48px rgba(0,0,0,.4);color-scheme:dark}}
+/* Modo oscuro (se activa con el interruptor; se guarda por navegador) */
 :root[data-theme="dark"]{
-  --bg:#0C0C0D;--frame:#151516;--side:#111112;--ink:#F2F2EF;--ink2:#A8A8A3;--ink3:#6F6F6B;
-  --line:#26262A;--line2:#34343A;--card:#1C1C1E;--chip:#232326;
-  --teal:#7CC7BF;--teal-soft:#16302D;--violet:#AEA6F5;--violet-soft:#25223F;--coral:#FF9B73;--coral-soft:#3A2017;
-  --amber:#F1C062;--amber-soft:#35290F;--green:#7DD3A3;--green-soft:#123222;--red:#FF8A7E;--red-soft:#3B1714;
-  --blue:#93B6F0;--navy:#C9D8F5;--brand:#8FB4F2;--accent:#6EA5F5;--flag:#FF9B73;--flag-soft:#3A2017;--teal:#6EA5F5;--teal-soft:#15284A;--coral:#C9D8F5;--coral-soft:#1C2A44;--blue-soft:#172640;--shadow:0 1px 2px rgba(0,0,0,.3),0 18px 48px rgba(0,0,0,.4);color-scheme:dark}
+  --bg:#070C16;--frame:#0F1626;--side:#0B1220;--ink:#EEF2F8;--ink2:#A3B0C6;--ink3:#6B7A94;
+  --line:#1C2740;--line2:#2A3754;--card:#151E31;--chip:#1A2439;
+  --navy:#C9D8F5;--brand:#8FB4F2;--accent:#5E9CF6;
+  --teal:#5E9CF6;--teal-soft:#14264A;--violet:#AEA6F5;--violet-soft:#241F45;--coral:#C9D8F5;--coral-soft:#1A2A4C;
+  --amber:#F1C062;--amber-soft:#2F2510;--orange:#F59E5B;--orange-soft:#33200F;--green:#7DD3A3;--green-soft:#0F2E20;--red:#FF8A7E;--red-soft:#3B1714;
+  --blue:#93B6F0;--blue-soft:#14264A;--flag:#FF9B73;--flag-soft:#3A2017;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 18px 48px rgba(0,0,0,.5);color-scheme:dark}
+:root[data-theme="dark"] .login{background:radial-gradient(70% 50% at 10% 0%,#13244A 0,transparent 60%),radial-gradient(60% 45% at 95% 100%,#1E1A3F 0,transparent 60%),var(--bg)}
+:root[data-theme="dark"] .lvis{background:radial-gradient(55% 45% at 15% 18%,#15284A 0,transparent 70%),radial-gradient(45% 40% at 88% 30%,#25223F 0,transparent 70%),var(--side)}
+:root[data-theme="dark"] .lvis::after{mix-blend-mode:screen;opacity:.25}
+:root[data-theme="dark"] .orgtag{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+:root[data-theme="dark"] .btn.pri{background:var(--accent);border-color:var(--accent);color:#07111F}
+:root[data-theme="dark"] .toast{background:#1E2B47}
+:root[data-theme="dark"] .seg button.on{box-shadow:0 1px 2px rgba(0,0,0,.4)}
+:root[data-theme="dark"] .bigmark{filter:drop-shadow(0 10px 24px rgba(94,156,246,.25))}
+:root[data-theme="dark"] .simple-steps span.cur{color:#07111F}
+:root[data-theme="dark"] .devtag{background:var(--chip);color:var(--ink)}
 html,body{background:var(--bg)}
 body{font-family:'Grift',-apple-system,'Segoe UI',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.45}
 button,input,textarea,select{font:inherit;color:inherit}
@@ -84,6 +91,10 @@ kbd{font:500 11px/1 inherit;border:1px solid var(--line2);border-radius:7px;padd
 .crumbs{display:flex;align-items:center;gap:12px;padding:22px 40px;border-bottom:1px solid var(--line);font-size:17px;min-height:76px}
 .crumbs .ic{color:var(--ink3)}
 .crumbs .rolepill{margin-left:auto}
+.crumbs .theme{flex:none}
+.sidefoot{display:flex;flex-direction:column;gap:8px;padding:12px 10px 0;font-size:11px;line-height:1.35}
+.sidefoot .orglogo{opacity:.9}
+.side .me{margin-top:auto}
 .hamb{display:none}
 .content{overflow:auto;padding:36px 40px 72px;flex:1}
 .scrim{display:none}
@@ -94,11 +105,15 @@ h2{font-family:'Kurdis',sans-serif;font-size:28px;letter-spacing:-.015em;font-we
 h3{font-size:17px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
 .head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
 /* ---------- folders ---------- */
-.folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:6px}
+.folders{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:6px}
 .folder{border-radius:28px;padding:16px 16px 22px;text-align:center;cursor:pointer;border:0;background:none;transition:background .25s,transform .25s}
 .folder:hover{background:var(--card)}
-.folder:hover svg{transform:translateY(-3px)}
-.folder svg{width:100%;max-width:230px;height:auto;transition:transform .3s;display:block;margin:0 auto}
+.folder:hover svg{transform:translateY(-6px) rotate(-1.5deg)}
+.folder:active svg{transform:translateY(-2px) scale(.98)}
+.folder .fcount{display:inline-flex;align-items:center;gap:6px;margin-top:8px;font-size:12.5px;color:var(--ink2);background:var(--chip);border-radius:999px;padding:3px 10px}
+.folder .fcount i{width:7px;height:7px;border-radius:50%;background:var(--sc,var(--ink3))}
+.folder svg{width:100%;max-width:230px;height:auto;transition:transform .35s cubic-bezier(.2,.8,.2,1);display:block;margin:0 auto;filter:drop-shadow(0 10px 18px rgba(9,49,105,.10))}
+:root[data-theme="dark"] .folder svg{filter:drop-shadow(0 10px 18px rgba(0,0,0,.45))}
 .folder b{display:block;font-size:19px;font-weight:500;margin-top:6px;letter-spacing:-.015em}
 .folder span{color:var(--ink2);font-size:14.5px}
 /* ---------- activity ---------- */
@@ -113,7 +128,7 @@ h3{font-size:17px;font-weight:600;letter-spacing:-.01em;margin-bottom:12px}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12.5px;font-weight:500;white-space:nowrap;line-height:1.3}
 .chip i{width:6px;height:6px;border-radius:50%;background:currentColor}
 .c-blue{background:var(--blue-soft);color:var(--blue)}.c-violet{background:var(--violet-soft);color:var(--violet)}
-.c-amber{background:var(--amber-soft);color:var(--amber)}.c-teal{background:var(--teal-soft);color:var(--teal)}
+.c-amber{background:var(--amber-soft);color:var(--amber)}.c-orange{background:var(--orange-soft);color:var(--orange)}.c-teal{background:var(--teal-soft);color:var(--teal)}
 .c-green{background:var(--green-soft);color:var(--green)}.c-red{background:var(--red-soft);color:var(--red)}
 .c-coral{background:var(--coral-soft);color:var(--flag)}.c-slate,.c-gray{background:var(--chip);color:var(--ink2)}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:12px;border:1px solid var(--line2);background:var(--frame);color:var(--ink);font-weight:500;font-size:14.5px;line-height:1;cursor:pointer;transition:transform .15s,background .15s;text-decoration:none;white-space:nowrap}
@@ -213,6 +228,12 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .stp.cur{color:var(--ink);font-weight:500}
 .stp.cur .dot{border-color:var(--accent);box-shadow:0 0 0 5px var(--teal-soft)}
 .stp span{display:block;margin-top:9px;white-space:nowrap}
+/* semáforo de etapas: recibida azul · asignada amarillo · en diseño naranja · aprobación violeta · entregada verde */
+.s0{--sc:var(--blue);--sc-soft:var(--blue-soft)}.s1{--sc:var(--amber);--sc-soft:var(--amber-soft)}.s2{--sc:var(--orange);--sc-soft:var(--orange-soft)}.s3{--sc:var(--violet);--sc-soft:var(--violet-soft)}.s4{--sc:var(--green);--sc-soft:var(--green-soft)}
+.stp.done .dot{background:var(--sc);border-color:var(--sc);color:#fff}
+.stp.done::before{background:var(--sc)}
+.stp.cur .dot{border-color:var(--sc);color:var(--sc);box-shadow:0 0 0 5px var(--sc-soft)}
+.stp.cur span{color:var(--sc)}
 .piece{background:var(--card);border-radius:16px;padding:18px 20px;font-size:17px;line-height:1.5;white-space:pre-wrap;font-weight:500;letter-spacing:-.01em}
 .timeline{display:flex;flex-direction:column}
 .tl{display:flex;gap:14px;padding-bottom:16px;position:relative}
@@ -285,11 +306,20 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .opt.fmt{flex-direction:row;align-items:center;min-height:0;padding:12px 14px}
 .opt.fmt .oi{width:52px;height:52px;border-radius:14px}
 .chip .ic{width:16px;height:16px}
+/* ---------- modo claro/oscuro ---------- */
+.theme{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--frame);border-radius:999px;padding:5px 10px 5px 6px;font-size:12.5px;color:var(--ink2);cursor:pointer}
+.theme:hover{background:var(--card)}
+.theme .sw{width:30px;height:18px;border-radius:999px;background:var(--chip);position:relative;transition:background .25s;flex:none}
+.theme .sw::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--ink3);transition:transform .25s,background .25s}
+:root[data-theme="dark"] .theme .sw{background:var(--accent)}
+:root[data-theme="dark"] .theme .sw::after{transform:translateX(12px);background:#07111F}
 /* ---------- intro ---------- */
 #intro{position:fixed;inset:0;z-index:200;background:#F6F8FB;display:grid;place-items:center;transition:opacity .5s ease}
 #intro[hidden]{display:none}
 #intro.out{opacity:0;pointer-events:none}
-#intro video{width:min(100vw,1280px);max-height:100vh;object-fit:cover;object-position:center}
+#intro video{width:min(92vw,1100px);height:min(92vh,620px);object-fit:contain;object-position:center}
+:root[data-theme="dark"] #intro{background:#070C16}
+:root[data-theme="dark"] #intro video{filter:invert(1) hue-rotate(180deg) saturate(1.15)}
 /* ---------- toasts ---------- */
 #toasts{position:fixed;right:24px;bottom:24px;display:flex;flex-direction:column;gap:8px;z-index:100}
 .toast{display:flex;align-items:center;gap:10px;background:var(--navy);color:#fff;padding:12px 16px;border-radius:14px;font-size:14px;box-shadow:var(--shadow);animation:tin .3s ease}
@@ -299,7 +329,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(70% 50% at 10% 0%,#D9E7FA 0,transparent 60%),radial-gradient(60% 45% at 95% 100%,#E7E4F7 0,transparent 60%),var(--bg)}
 .lcard{grid-template-columns:1.15fr 1fr}
 .lcard{width:min(1040px,100%);display:grid;grid-template-columns:1.1fr 1fr;background:var(--frame);border-radius:32px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
-.lvis{position:relative;overflow:hidden;isolation:isolate;padding:30px 40px 32px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line);
+.lvis{position:relative;overflow:hidden;isolation:isolate;min-height:0;padding:30px 40px 32px;display:flex;flex-direction:column;justify-content:space-between;gap:24px;border-right:1px solid var(--line);
   background:
     radial-gradient(55% 45% at 15% 18%,#CFE0FA 0,rgba(207,224,250,0) 70%),
     radial-gradient(45% 40% at 88% 30%,#E3DEF9 0,rgba(227,222,249,0) 70%),
@@ -313,9 +343,10 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.04 0 0 0 0 0.19 0 0 0 0 0.41 0 0 0 .32 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
 @keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(4%,6%) rotate(6deg)}}
 .lvis-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.lobby{flex:1;display:grid;place-items:center;min-height:0;margin:-14px -20px -6px}
-.lobby img{width:min(112%,470px);max-width:none;aspect-ratio:1;animation:floaty 7s ease-in-out infinite}
-.lcard{max-height:calc(100vh - 48px)}
+.lobby{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;overflow:visible;margin:-10px -20px -6px}
+.lobby img{height:100%;max-height:470px;width:auto;max-width:112%;aspect-ratio:1;animation:floaty 7s ease-in-out infinite}
+.lcard{height:min(880px,calc(100vh - 48px))}
+@media (max-width:900px){.lcard{height:auto}}
 .lform{overflow:auto}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .orgtag{font-size:12.5px;font-weight:500;color:var(--navy);background:rgba(255,255,255,.7);border:1px solid rgba(9,49,105,.12);padding:5px 11px;border-radius:999px;backdrop-filter:blur(6px)}
@@ -326,13 +357,12 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .lockup span,.wordmark{font-family:'Kurdis',sans-serif;font-weight:400;letter-spacing:-.01em}
 .lockup span b{font-weight:600}
 .bigorg{font-size:17px;color:var(--brand);font-weight:500;letter-spacing:-.01em;padding-left:2px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lvis{background:radial-gradient(55% 45% at 15% 18%,#15284A 0,transparent 70%),radial-gradient(45% 40% at 88% 30%,#25223F 0,transparent 70%),var(--side)} :root:not([data-theme="light"]) .orgtag{background:rgba(255,255,255,.08);color:var(--navy)}}
 .lvis .stack{position:relative;height:300px}
 .lvis .stack svg{position:absolute;width:62%}
-.lform{padding:48px 44px;display:flex;flex-direction:column;justify-content:center;min-width:0}
+.lform{padding:36px 40px;display:flex;flex-direction:column;justify-content:safe center;min-width:0}
 .lform h1{font-family:'Kurdis',sans-serif;font-size:32px;letter-spacing:-.02em;font-weight:400;line-height:1.1;color:var(--navy)}
-.demo{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-.demo button{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:var(--frame);cursor:pointer;text-align:left}
+.demo{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.demo button{display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--line);border-radius:14px;background:var(--frame);cursor:pointer;text-align:left}
 .demo button:hover{background:var(--card)}
 .demo button>span:not(.av){display:flex;flex-direction:column;line-height:1.25;font-size:14px;min-width:0;flex:1}
 .demo button>.ic{flex:none;color:var(--ink3)}
@@ -343,7 +373,13 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .seg button.on{background:var(--frame);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
 .err{color:var(--red);font-size:13.5px;margin-top:8px}
 /* ---------- responsive ---------- */
-@media (max-width:1180px){.grid2{grid-template-columns:1fr}.mailwrap{grid-template-columns:1fr}}
+@media (max-width:1180px){.grid2{grid-template-columns:1fr}.mailwrap{grid-template-columns:1fr}
+  .app{grid-template-columns:248px minmax(0,1fr);margin:16px auto;height:calc(100vh - 32px);border-radius:22px}
+  .content{padding:28px 26px 64px}.crumbs{padding:18px 26px}
+  .folders{grid-template-columns:repeat(auto-fit,minmax(132px,1fr))}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){.crumbs .theme span.sw{margin:0}.crumbs .theme{font-size:0;gap:0;padding:5px 6px}}
+@media (hover:none){.folder:hover{background:none}.folder:active{background:var(--card)}}
 @media (max-width:1000px){
   .lhead{display:none}
   .lrow{grid-template-columns:1fr auto;grid-template-areas:"t s" "m d";gap:6px 12px;padding:14px 12px}
@@ -368,7 +404,7 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
   .bigmark svg{width:56px;height:60px}
   .lobby{min-height:0}
   .lobby{margin:-6px 0}
-  .lobby img{width:min(100%,250px)}
+  .lobby img{height:auto;width:min(100%,250px)}
   .bigname{font-size:28px}
   .bigorg{font-size:14px}
   .lvis>p.muted{display:none}
@@ -422,11 +458,12 @@ select.in{appearance:none;background-image:linear-gradient(45deg,transparent 50%
 .rqc .pos b{display:block;font-size:34px;font-weight:600;letter-spacing:-.04em;line-height:1}
 .rqc .pos small{color:var(--ink3);font-size:12px}
 .prog{height:6px;border-radius:999px;background:var(--chip);overflow:hidden;margin-top:14px}
-.prog i{display:block;height:100%;background:var(--role);border-radius:999px;transition:width .4s}
+.prog i{display:block;height:100%;background:var(--sc,var(--role));border-radius:999px;transition:width .4s}
 .simple-steps{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .simple-steps span{font-size:12.5px;color:var(--ink3);padding:3px 9px;border-radius:999px;background:var(--chip)}
-.simple-steps span.cur{background:var(--role);color:var(--frame)}
-.simple-steps span.done{color:var(--ink)}
+.simple-steps span.cur{background:var(--sc);color:#fff}
+.simple-steps span.done{color:var(--sc);background:var(--sc-soft)}
+.simple-steps span.done::before{content:"✓ ";font-size:11px}
 .hero{background:var(--role-soft);border-radius:24px;padding:22px 24px;display:flex;gap:16px;align-items:center;margin-top:22px}
 .hero .ic{color:var(--role)}
 .hero p{font-size:15px}
@@ -484,17 +521,17 @@ const PRESETS = {
       ['and','Andrés Beltrán','solicitante','Mercadeo'],
       ['lau','Laura Gómez','solicitante','Seguridad y Salud en el Trabajo']
     ], main:'mil' },
-  epc: { org:'Empresas Públicas de Cundinamarca', short:'EPC', suite:'Microsoft 365 (Outlook, SharePoint, Power Apps)', domain:'epc.demo', label:'EPC · Microsoft',
+  epc: { org:'Empresas Públicas de Cundinamarca', short:'EPC', suite:'Microsoft 365 (Outlook, SharePoint)', domain:'epc.com.co', label:'EPC · Piloto',
+    logo:'assets/epc_logo.svg', logoDark:'assets/epc_logo_blanco.svg',
     users:[
-      ['jco','Juan Camilo Orozco','disenador','Comunicaciones · Diseño',{designs:true,dev:true}],
+      ['mau','Mauricio Silva','supervisor','Dirección de Comunicaciones',{designs:false}],
+      ['jco','Juan Camilo Orozco','disenador','Comunicaciones · Diseño',{designs:true,dev:true,email:'camiloorozcofx@gmail.com'}],
+      ['jca','Juan Camilo','disenador','Comunicaciones · Diseño',{designs:true}],
       ['atr','Andrés Triana','disenador','Comunicaciones · Diseño',{designs:true}],
-      ['cml','Camilo','disenador','Comunicaciones · Diseño',{designs:true}],
-      ['sof','Sofi','disenador','Comunicaciones · Video',{designs:true,video:true}],
-      ['dan','Daniel','solicitante','Comunicaciones · Periodismo',{internal:true}],
-      ['mau','Mauricio','supervisor','Dirección de Comunicaciones',{designs:false}],
-      ['joa','Joana','solicitante','Talento Humano'],
-      ['mun','Secretaría de Gobierno','solicitante','Gobernación · Municipios']
-    ], main:'joa' }
+      ['sof','Sofía','disenador','Comunicaciones · Video',{designs:true,video:true,title:'Videógrafa'}],
+      ['dan','Daniel','solicitante','Comunicaciones · Prensa',{internal:true,title:'Comunicador social'}],
+      ['sol','Solicitante','solicitante','Área solicitante',{title:'Solicitante',generic:true}]
+    ], main:'sol' }
 };
 const TYPES = [
   {id:'post',label:'Post para redes',icon:'grid'},
@@ -529,13 +566,14 @@ const OBJ_IC = {informar:'megaphone',invitar:'mail',promocionar:'target',reconoc
 const AUDIENCES = ['Interno','Externo','Municipios','Aliados'];
 const ST = {
   recibida:{l:'Recibida',c:'blue'}, revision:{l:'En revisión',c:'violet'}, devuelta:{l:'Devuelta',c:'amber'},
-  asignada:{l:'Asignada',c:'slate'}, diseno:{l:'En diseño',c:'teal'}, aprobacion:{l:'En aprobación',c:'violet'},
-  ajustes:{l:'Ajustes',c:'amber'}, aprobada:{l:'Aprobada',c:'green'}, entregada:{l:'Entregada',c:'green'}, cancelada:{l:'Cancelada',c:'gray'}
+  asignada:{l:'Asignada',c:'amber'}, diseno:{l:'En diseño',c:'orange'}, aprobacion:{l:'En aprobación',c:'violet'},
+  ajustes:{l:'Ajustes',c:'violet'}, aprobada:{l:'Aprobada',c:'green'}, entregada:{l:'Entregada',c:'green'}, cancelada:{l:'Cancelada',c:'gray'}
 };
 const ACTIVE = ['recibida','revision','asignada','diseno','aprobacion','ajustes','aprobada'];
 const STEPS = ['Recibida','Asignada','En diseño','En aprobación','Entregada'];
 const stepIdx = s => ({recibida:0,revision:0,devuelta:0,asignada:1,diseno:2,aprobacion:3,ajustes:3,aprobada:3,entregada:4,cancelada:0})[s];
 const ROLE = {solicitante:'Solicitante',disenador:'Diseñador',supervisor:'Supervisor',director:'Director'};
+const roleLabel = u => u.title || ROLE[u.role];
 const ROLE_DESC = {solicitante:'Pide piezas y aprueba',disenador:'Diseña lo que se le asigna',supervisor:'Asigna, prioriza y vigila tiempos',director:'Control total'};
 const CAN = {
   seeAll: u => u.role==='supervisor' || u.role==='director',
@@ -642,7 +680,7 @@ const miniFolder = c => `<svg width="20" height="16" viewBox="0 0 20 16" aria-hi
 const fakeImg = (a,b,label,ratio) => { const [w,hh] = ratio==='v'?[480,640]:ratio==='s'?[600,600]:[640,480]; return 'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${hh}"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="${w}" height="${hh}" fill="url(#g)"/><circle cx="${w*.72}" cy="${hh*.3}" r="${w*.11}" fill="#fff" fill-opacity=".35"/><path d="M0 ${hh*.8} L${w*.25} ${hh*.55} L${w*.47} ${hh*.73} L${w*.66} ${hh*.5} L${w} ${hh*.83} V${hh} H0z" fill="#000" fill-opacity=".18"/><rect x="${w*.06}" y="${hh*.08}" width="${w*.5}" height="${hh*.06}" rx="6" fill="#fff" fill-opacity=".85"/><rect x="${w*.06}" y="${hh*.17}" width="${w*.34}" height="${hh*.035}" rx="5" fill="#fff" fill-opacity=".55"/><text x="${w*.06}" y="${hh*.93}" font-family="system-ui,sans-serif" font-size="${w*.04}" font-weight="600" fill="#fff" fill-opacity=".9">${label}</text></svg>`); };
 
 /* ---------- data ---------- */
-const KEY = 'c360-demo-v3';
+const KEY = 'c360-demo-v4';
 const IKEY = 'c360-integ';
 let INTEG = {url:'',gestor:'',on:false};
 try{ INTEG = {...INTEG, ...(JSON.parse(localStorage.getItem(IKEY)||'{}'))}; }catch(e){}
@@ -700,7 +738,7 @@ function seed(preset){
     {name:'logo_aliado.png',size:88000,thumb:fakeImg('#3563A8','#9FB9E6','Logo aliado','s')}
   ];
   const prop = (l,r) => ({name:'propuesta_v1.jpg',thumb:fakeImg('#5149A8','#B9B2F0',l,r)});
-  if(P.empty) return {v:3,preset,org:P.org,short:P.short,suite:P.suite,domain:P.domain,cfg,users,reqs,mails,seq,session:null};
+  if(P.empty) return {v:4,preset,org:P.org,short:P.short,suite:P.suite,domain:P.domain,cfg,users,reqs,mails,seq,session:null};
   // Pieza real de ejemplo (ELC): afiche entregado
   if(preset==='elc') mk({title:'Día Internacional contra el Cambio Climático',type:'afiche',by:'lau',st:'entregada',as:'cam',ago:4,due:-1,dAgo:1,formats:['Feed 4:5','Pantalla / TV'],obj:'informar',aud:['Interno'],ctx:'Pieza conmemorativa del 24 de octubre para redes internas y carteleras, con acciones concretas que puede hacer cada colaborador.',text:'Día Internacional contra el CAMBIO CLIMÁTICO · 24 de octubre\n¿Qué es? · Causas · ¿Qué se puede hacer para disminuir su efecto?\n¡Pequeñas acciones pueden contribuir a un gran cambio!',logos:'ELC, SGC, Actitud Verde',final:'cambio_climatico_final.jpg',prop:{name:'propuesta_v1.jpg',thumb:'assets/ejemplo_cambio_climatico.jpg'},finalThumb:'assets/ejemplo_cambio_climatico.jpg'});
   // Casos principales (solicitante principal del preset)
@@ -716,12 +754,22 @@ function seed(preset){
   mk({title:'Banner intranet convocatoria',type:'otro',by:Rq(2),st:'devuelta',ago:2,due:3,formats:['Horizontal 16:9'],ctx:'Banner para convocatoria interna.',text:'(pendiente)',ret:'Falta el texto final y el logo del aliado.'});
   mk({title:'Historia horario festivo',type:'historia',by:Rq(1),st:'entregada',as:D(1),ago:7,due:-2,dAgo:3,formats:['Vertical 9:16'],ctx:'Aviso de horario en festivo.',text:'Horario festivo\n9:00 a. m. a 1:00 p. m.',final:'historia_festivo.png'});
   if(req.length>3){ mk({title:'Carrusel aniversario municipio',type:'post',by:req[3],st:'recibida',ago:0,h:4,due:4,formats:['Feed 4:5'],obj:'reconocer',aud:['Municipios','Externo'],ctx:'Pieza por el aniversario del municipio, para redes de la Gobernación.',text:'¡Feliz aniversario!\n[Municipio] · [años]'}); }
-  return {v:3,preset,org:P.org,short:P.short,suite:P.suite,domain:P.domain,cfg,users,reqs,mails:mails.sort((a,b)=>b.at-a.at),seq,session:null};
+  return {v:4,preset,org:P.org,short:P.short,suite:P.suite,domain:P.domain,cfg,users,reqs,mails:mails.sort((a,b)=>b.at-a.at),seq,session:null};
 }
 function addBizCfg(from,n,cfg){ const d = new Date(from); d.setHours(0,0,0,0); const s = n<0?-1:1; let c = 0; const ok = x => { const w = x.getDay(); return w!==0 && w!==6 && !cfg.holidays.includes(iso(x)); }; while(c < Math.abs(n)){ d.setDate(d.getDate()+s); if(ok(d)) c++; } return d; }
-function load(){ try{ const x = JSON.parse(localStorage.getItem(KEY)); return x && x.v===3 ? x : null; }catch(e){ return null; } }
+function load(){ try{ const x = JSON.parse(localStorage.getItem(KEY)); return x && x.v===4 ? x : null; }catch(e){ return null; } }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-S = load() || seed('elc');
+S = load() || seed('epc');
+// ?org=epc | elc | prueba → abre la plataforma con esa empresa (un enlace por empresa)
+try{ const o = new URLSearchParams(location.search).get('org'); if(o && PRESETS[o] && S.preset!==o){ S = seed(o); save(); } }catch(e){}
+/* Tema: claro por defecto; el interruptor lo guarda por navegador. */
+const THEME_KEY = 'c360-theme';
+function theme(){ try{ return localStorage.getItem(THEME_KEY) || 'light'; }catch(e){ return 'light'; } }
+function applyTheme(t){ document.documentElement.setAttribute('data-theme', t); try{ localStorage.setItem(THEME_KEY, t); }catch(e){} }
+applyTheme(theme());
+const themeBtn = () => `<button class="theme" data-a="theme" type="button" aria-label="Cambiar modo claro u oscuro"><span class="sw"></span>${theme()==='dark'?'Modo oscuro':'Modo claro'}</button>`;
+const orgLogo = (hgt=36) => { const P = PRESETS[S.preset]||{}; if(!P.logo) return ''; const src = theme()==='dark' && P.logoDark ? P.logoDark : P.logo; return `<img class="orglogo" src="${src}" alt="${h(S.org)}" style="height:${hgt}px;width:auto;display:block">`; };
+const COPY = '© 2026 Juan Camilo Orozco Galindo · Todos los derechos reservados';
 
 const U = id => S.users.find(u=>u.id===id);
 const R = id => S.reqs.find(r=>r.id===id);
@@ -784,7 +832,7 @@ function loginView(){
   const users = S.users.slice().sort((a,b)=>roles.indexOf(a.role)-roles.indexOf(b.role));
   return `<div class="login"><div class="lcard">
     <div class="lvis">
-      <div class="lvis-top"><span class="orgtag">${h(S.short)} · ${S.preset==='elc'?'Google Workspace':'Microsoft 365'}</span><span class="faint" style="font-size:12.5px">Prototipo · v4</span></div>
+      <div class="lvis-top">${PRESETS[S.preset]&&PRESETS[S.preset].logo?orgLogo(64):`<span class="orgtag">${h(S.short)} · ${h(S.suite.split(' (')[0])}</span>`}<span class="faint" style="font-size:12.5px">${S.preset==='epc'?'Piloto · v7':'Prototipo · v7'}</span></div>
       <div class="lobby"><img src="assets/lobby.svg" alt="" loading="lazy"></div>
       <div class="lvis-brand">
         <div class="bigmark">${mark(96)}</div>
@@ -802,12 +850,13 @@ function loginView(){
         <button class="btn pri" style="width:100%;margin-top:12px;padding:14px">${ic('lock',16)} Continuar</button>
       </form>
       <div class="sec" style="padding:0;margin-top:26px"><span>CUENTAS DE DEMOSTRACIÓN</span></div>
-      <div class="demo">${users.map(u=>`<button data-a="demo" data-id="${u.id}">${avatar(u)}<span><span class="trunc">${h(u.name)}</span><small class="trunc">${ROLE[u.role]}${u.dev?' · desarrollador':''} · ${h(u.area)}</small></span>${ic('chev',16)}</button>`).join('')}</div>
+      <div class="demo">${users.map(u=>`<button data-a="demo" data-id="${u.id}">${avatar(u)}<span><span class="trunc">${h(u.name)}</span><small class="trunc">${roleLabel(u)}${u.dev?' · desarrollador':''} · ${h(u.area)}</small></span>${ic('chev',16)}</button>`).join('')}</div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:20px;flex-wrap:wrap">
-        <span class="faint" style="font-size:13px">Empresa de la demo</span>
+        ${themeBtn()}
         <div class="seg">${Object.entries(PRESETS).map(([k,p])=>`<button data-a="preset" data-p="${k}" class="${S.preset===k?'on':''}">${p.label}</button>`).join('')}</div>
       </div>
-      <p class="faint" style="font-size:12.5px;margin-top:14px">${S.preset==='prueba'?(INTEG.on&&INTEG.url?'Integración real activa: Drive + Gmail.':'Sin integración: entra como Camilo → Configuración y pega la URL del Apps Script.'):'Prototipo local. Datos ficticios guardados solo en este navegador.'}</p>
+      <p class="faint" style="font-size:12.5px;margin-top:14px">${S.preset==='prueba'?(INTEG.on&&INTEG.url?'Integración real activa: Drive + Gmail.':'Sin integración: entra como Camilo → Configuración y pega la URL del Apps Script.'):S.preset==='epc'?(INTEG.on&&INTEG.url?'Piloto EPC · Drive y correo activos.':'Piloto EPC · los datos se guardan en este navegador.'):'Prototipo local. Datos ficticios guardados solo en este navegador.'}</p>
+      <p class="faint" style="font-size:11.5px;margin-top:10px">${COPY}</p>
     </div>
   </div></div>`;
 }
@@ -843,13 +892,13 @@ function treeHTML(){
   const node = (f,label,color,kid) => `<a data-a="go" data-r="list" data-f="${h(f)}" class="${kid?'kid':''} ${V.route==='list'&&V.filter===f?'on':''}">${miniFolder(color)}<span class="trunc">${h(label)}</span><span class="count">${n(f)}</span></a>`;
   let out = '';
   if(m.role==='solicitante'){
-    out = `<div class="sec"><span>MIS CARPETAS</span></div><div class="tree">${node('curso','En proceso','#7B72C8')}${node('aprobacion','Esperan mi respuesta','#B3ADEB')}${node('entregada','Entregadas','#8C93F2')}${node('devuelta','Devueltas','#E8B23A')}${node('cancelada','Canceladas','#B9B9B5')}</div>`;
+    out = `<div class="sec"><span>MIS CARPETAS</span></div><div class="tree">${node('curso','En proceso','#D9602F')}${node('aprobacion','Esperan mi respuesta','#6457C4')}${node('entregada','Entregadas','#1E7A4F')}${node('devuelta','Devueltas','#E8B23A')}${node('cancelada','Canceladas','#B9B9B5')}</div>`;
   } else if(m.role==='disenador'){
-    out = `<div class="sec"><span>MIS CARPETAS</span></div><div class="tree">${node('curso','Por hacer','#7B72C8')}${node('aprobacion','En aprobación y ajustes','#B3ADEB')}${node('entregada','Entregadas','#8C93F2')}</div>`;
+    out = `<div class="sec"><span>MIS CARPETAS</span></div><div class="tree">${node('curso','Por hacer','#D9602F')}${node('aprobacion','En aprobación y ajustes','#6457C4')}${node('entregada','Entregadas','#1E7A4F')}</div>`;
   } else {
     const areas = [...new Set(S.reqs.map(r=>r.area))].sort();
     out = `<div class="sec"><span>ESTADOS</span><button class="btn ghost icon" data-a="go" data-r="new" aria-label="Nueva solicitud">${ic('plus',16)}</button></div>
-      <div class="tree">${node('porasignar','Por asignar','#146CE8')}${node('encurso','En curso','#7B72C8')}${node('aprobacion','En aprobación','#B3ADEB',1)}${node('devuelta','Devueltas','#E8B23A',1)}${node('prioridad','Prioridades por aprobar','#E2603A')}${node('riesgo','En riesgo','#C2392C')}${node('entregada','Histórico de entregas','#8C93F2')}${node('cancelada','Canceladas','#B9B9B5',1)}${node('all','Todas','#4A4A47')}</div>
+      <div class="tree">${node('porasignar','Por asignar','#146CE8')}${node('encurso','En curso','#D9602F')}${node('aprobacion','En aprobación','#6457C4',1)}${node('devuelta','Devueltas','#E8B23A',1)}${node('prioridad','Prioridades por aprobar','#E2603A')}${node('riesgo','En riesgo','#C2392C')}${node('entregada','Histórico de entregas','#1E7A4F')}${node('cancelada','Canceladas','#B9B9B5',1)}${node('all','Todas','#4A4A47')}</div>
       <div class="sec"><span>EQUIPO</span></div><div class="tree">${designers().map(d=>`<a data-a="go" data-r="list" data-f="d:${d.id}" class="${V.route==='list'&&V.filter==='d:'+d.id?'on':''}"><span class="person">${avatar(d,22)}</span><span class="trunc">${h(d.name)}</span><span class="count">${n('d:'+d.id)}</span></a>`).join('')}</div>
       <div class="sec"><span>ÁREAS</span></div><div class="tree">${areas.map(a=>node('a:'+a,a,'#B9B9B5')).join('')}</div>`;
   }
@@ -873,11 +922,12 @@ function shell(){
       <label class="search">${ic('search',18)}<input id="q" placeholder="Buscar" value="${h(V.q)}" autocomplete="off"><kbd>⌘K</kbd></label>
       <nav class="nav">${navItems()}</nav>
       ${treeHTML()}
-      <div class="me">${avatar(m,34)}<span><b style="font-weight:500">${h(m.name)}</b><small>${ROLE[m.role]}${m.dev?' · dev':''} · ${h(m.email)}</small></span><button class="btn ghost icon" data-a="logout" aria-label="Cerrar sesión">${ic('out',18)}</button></div>
+      <div class="me">${avatar(m,34)}<span><b style="font-weight:500">${h(m.name)}</b><small>${roleLabel(m)}${m.dev?' · dev':''} · ${h(m.email)}</small></span><button class="btn ghost icon" data-a="logout" aria-label="Cerrar sesión">${ic('out',18)}</button></div>
+      <div class="sidefoot">${orgLogo(40)}<span class="faint">${h(COPY)}</span></div>
     </aside>
     <div class="scrim ${V.side?'open':''}" data-a="side"></div>
     <main class="main">
-      <header class="crumbs"><button class="btn ghost icon hamb" data-a="side" aria-label="Menú">${ic('menu')}</button>${crumb}<span class="chip rolepill">${ic('user',13,2)} ${ROLE[m.role]}</span></header>
+      <header class="crumbs"><button class="btn ghost icon hamb" data-a="side" aria-label="Menú">${ic('menu')}</button>${crumb}<span class="chip rolepill">${ic('user',13,2)} ${roleLabel(m)}</span>${themeBtn()}</header>
       <div class="content">${content()}</div>
     </main>
   </div>`;
@@ -913,7 +963,7 @@ function activityHTML(list, n=6){
 /* ---------- SOLICITANTE: inicio simple ---------- */
 function simpleSteps(r){
   const si = stepIdx(r.status), labels = ['Recibida','Asignada','En diseño','Tu aprobación','Entregada'];
-  return `<div class="simple-steps">${labels.map((l,i)=>`<span class="${i<si||r.status==='entregada'?'done':''} ${i===si&&r.status!=='entregada'?'cur':''}">${l}</span>`).join('')}</div>`;
+  return `<div class="simple-steps">${labels.map((l,i)=>`<span class="s${i} ${i<si||r.status==='entregada'?'done':''} ${i===si&&r.status!=='entregada'?'cur':''}">${l}</span>`).join('')}</div>`;
 }
 function reqCard(r){
   const p = qpos(r), act = ACTIVE.includes(r.status), pct = r.status==='entregada'?100:[8,30,55,80,100][stepIdx(r.status)];
@@ -928,7 +978,7 @@ function reqCard(r){
     <div style="min-width:0"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${stChip(r.status)}${r.priority&&r.priority.status==='aprobada'?chip('Prioridad','coral'):''}<span class="idc">${h(r.id)}</span></div>
       <h4 style="margin-top:8px">${h(r.title)}</h4>
       <div class="meta"><span>${line}</span></div>
-      ${act?`<div class="prog"><i style="width:${pct}%"></i></div>${simpleSteps(r)}`:''}</div>
+      ${act?`<div class="prog s${stepIdx(r.status)}"><i style="width:${pct}%"></i></div>${simpleSteps(r)}`:''}</div>
     ${act?`<div class="pos"><b>${p+1}</b><small>de ${queue().length} en fila</small></div>`:''}
   </div>`;
 }
@@ -1022,7 +1072,7 @@ function dashView(){
   const ar = Object.entries(areas).sort((a,b)=>b[1]-a[1]); const maxA = Math.max(1,...ar.map(x=>x[1]));
   const opts = r => `<select class="in sel" data-change="assign" data-id="${r.id}"><option value="">Asignar a…</option>${designers().map(d=>`<option value="${d.id}" ${r.assignee===d.id?'selected':''}>${h(d.name)} (${load.find(x=>x.d.id===d.id).n})${d.video?' · video':''}</option>`).join('')}</select>`;
   return `<div class="head"><div><h1 class="big">Tablero de control</h1><p class="lead">${act.length} activas, ${unas.length} por asignar, ${prio.length} prioridad${prio.length===1?'':'es'} por decidir y ${risk.length} en riesgo de vencerse.</p></div><button class="btn" data-a="go" data-r="list">${ic('inbox',18)} Ver todas</button></div>
-    <div class="folders" style="margin-top:28px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">
+    <div class="folders" style="margin-top:28px">
       <button class="folder" data-a="go" data-r="list" data-f="porasignar">${folderArt('silver',unas.length+' en fila')}<b>Por asignar</b><span>${unas.length} esperando diseñador</span></button>
       <button class="folder" data-a="go" data-r="list" data-f="encurso">${folderArt('teal',(act.length-unas.length)+' activas',designers())}<b>En curso</b><span>Asignadas, en diseño o en aprobación</span></button>
       <button class="folder" data-a="go" data-r="list" data-f="prioridad">${folderArt('coral',prio.length+' por decidir')}<b>Prioridades</b><span>Requieren tu aprobación</span></button>
@@ -1036,7 +1086,7 @@ function dashView(){
       <div class="kpi"><small>Entregadas a tiempo</small><b>${del.length?Math.round(ontime/del.length*100)+'%':'—'}</b><em>${ontime} de ${del.length} entregas</em></div>
     </div>
     <div class="split" style="margin-top:24px">
-      <div class="card"><h3>Por asignar <span class="faint" style="font-weight:400;font-size:14px">· en orden de entrega</span></h3>${unas.length?unas.map(r=>`<div class="qrow"><div style="min-width:0"><b class="trunc" data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(U(r.requester).name)} · ${h(r.area)} · ${fmt(effDue(r))}${r.priority&&r.priority.status==='pendiente'?' · <span style="color:var(--flag)">prioridad</span>':''}</small></div>${opts(r)}</div>`).join(''):'<div class="empty">Nada por asignar.</div>'}</div>
+      <div class="card"><h3>Por asignar <span class="faint" style="font-weight:400;font-size:14px">· en orden de entrega</span></h3>${unas.length?unas.map(r=>`<div class="qrow"><div style="min-width:0"><b class="trunc" data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(U(r.requester).name)} · ${h(r.area)} · ${fmt(effDue(r))}${r.priority&&r.priority.status==='pendiente'?' · <span style="color:var(--flag)">prioridad</span>':''}</small></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">${(()=>{const sg=suggestFor(r);return sg?`<button class="btn sm" data-a="assignTo" data-id="${r.id}" data-to="${sg.id}" title="Menor carga${TY(r.type).video?' · video':''}">${ic('check',14,2)} ${h(sg.name)}</button>`:''})()}${opts(r)}</div></div>`).join(''):'<div class="empty">Nada por asignar.</div>'}</div>
       <div class="card"><h3>Prioridades por aprobar</h3>${prio.length?prio.map(r=>`<div class="qrow" style="grid-template-columns:1fr"><div><b data-a="open" data-id="${r.id}">${h(r.title)}</b><small>${h(first(U(r.requester)))} pide ${fmt(r.due)} · estándar ${fmt(r.minDue)}</small><div class="note">${h(r.priority.reason)}</div><div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button class="btn sm pri" data-a="prioOk" data-id="${r.id}">${ic('check',14)} Aprobar</button><button class="btn sm" data-a="prioNo" data-id="${r.id}">Mantener fecha estándar</button></div></div></div>`).join(''):'<div class="empty">Sin prioridades pendientes.</div>'}</div>
       <div class="card"><h3>Carga del equipo</h3><div class="bars">${load.map(x=>`<div class="bar"><span class="trunc">${h(x.d.name)}</span><div class="tr"><div class="fl" style="width:${x.n/maxL*100}%"></div></div><b>${x.n}</b></div>`).join('')}</div><p class="faint" style="font-size:12.5px;margin-top:14px">Solicitudes activas por persona. Toca un nombre en el menú lateral para ver sus piezas.</p></div>
       <div class="card"><h3>Solicitudes por área</h3><div class="bars">${ar.map(([a,n])=>`<div class="bar"><span class="trunc">${h(a)}</span><div class="tr"><div class="fl" style="width:${n/maxA*100}%;background:var(--teal)"></div></div><b>${n}</b></div>`).join('')}</div></div>
@@ -1199,7 +1249,7 @@ function detailView(){
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="idc">${h(r.id)}</span>${stChip(r.status)}${r.priority?chip(r.priority.status==='pendiente'?'Prioridad pendiente':r.priority.status==='aprobada'?'Prioridad aprobada':'Prioridad no aprobada', r.priority.status==='rechazada'?'gray':'coral'):''}${slaChip(r)}</div>
     <h1 class="big" style="margin-top:12px">${h(r.title)}</h1>
     <p class="lead">${h(U(r.requester).name)} · ${h(r.area)} · enviada ${ago(r.created)}</p>
-    ${r.status==='cancelada'?`<div class="alert red">${ic('x')}<p><b>Cancelada.</b> ${h(r.cancelReason||'')}</p></div>`:`<div class="stepper">${STEPS.map((l,i)=>`<div class="stp ${i<si||(i===si&&r.status==='entregada')?'done':''} ${i===si&&r.status!=='entregada'?'cur':''}"><div class="dot">${i<si||r.status==='entregada'?ic('check',14,2):i+1}</div><span>${l}</span></div>`).join('')}</div>`}
+    ${r.status==='cancelada'?`<div class="alert red">${ic('x')}<p><b>Cancelada.</b> ${h(r.cancelReason||'')}</p></div>`:`<div class="stepper">${STEPS.map((l,i)=>`<div class="stp s${i} ${i<si||(i===si&&r.status==='entregada')?'done':''} ${i===si&&r.status!=='entregada'?'cur':''}"><div class="dot">${i<si||r.status==='entregada'?ic('check',14,2):i+1}</div><span>${l}</span></div>`).join('')}</div>`}
     ${r.status==='devuelta'?`<div class="alert amber" style="margin-top:0;margin-bottom:20px">${ic('bell')}<p><b>Devuelta por falta de información:</b> ${h(r.returnReason)}</p></div>`:''}
     <div class="grid2"><div>
       ${r.status==='ajustes' && r.proposal ? `<div class="card" style="border-color:var(--amber-soft)"><h3 style="display:flex;gap:8px;align-items:center">${ic('pen',18)} Ajustes pedidos · ronda ${r.rounds} de ${CFG().maxRounds}</h3><p class="muted" style="font-size:14px;margin-top:-6px">${h(first(U(r.requester)))} marcó ${(lastAdj.pins||[]).length} punto${(lastAdj.pins||[]).length===1?'':'s'} sobre la propuesta.</p>${annotHTML(r,false)}</div>`:''}
@@ -1302,6 +1352,13 @@ function cfgView(){
 
 /* ---------- acciones ---------- */
 const note360 = '\n\nConsulta el detalle en Comunicación 360.';
+// Sugerencia de asignación: video → videógrafa si existe; después, quien tenga menos piezas activas.
+function suggestFor(r){
+  const act = S.reqs.filter(x=>ACTIVE.includes(x.status));
+  let cands = designers(); if(TY(r.type).video && cands.some(d=>d.video)) cands = cands.filter(d=>d.video);
+  const load = d => act.filter(x=>x.assignee===d.id).length;
+  return cands.slice().sort((a,b)=>load(a)-load(b))[0];
+}
 function assign(r, did){
   if(!did) return;
   const d = U(did), prev = r.assignee;
@@ -1322,6 +1379,8 @@ const ACT = {
   reset:()=>{ if(confirm('¿Restablecer los datos de la demo? Se perderán los cambios.')){ const s = S.session; S = seed(S.preset); S.session = s; save(); go('home'); } },
   demo:t=>{ S.session=t.dataset.id; save(); intro(()=>go('home')); },
   preset:t=>{ if(t.dataset.p===S.preset) return; S = seed(t.dataset.p); save(); render(); },
+  theme:()=>{ applyTheme(theme()==='dark'?'light':'dark'); render(); },
+  assignTo:t=>{ assign(R(t.dataset.id), t.dataset.to); },
   filter:t=>{ V.filter=t.dataset.f; render(); },
   clearq:()=>{ V.q=''; render(); },
   copy:t=>{ const r = R(t.dataset.id); try{ navigator.clipboard.writeText(r.pieceText).then(()=>toast('Texto copiado'),()=>toast('No se pudo copiar')); }catch(e){ toast('No se pudo copiar'); } },
